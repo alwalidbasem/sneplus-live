@@ -1,0 +1,6 @@
+node_modules/
+.env
+storage/logs/*.log
+storage/simulator-config.json
+public/uploads/products/*
+!public/uploads/products/.gitkeep

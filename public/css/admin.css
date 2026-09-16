@@ -1,0 +1,19 @@
+/* Small admin-only styles */
+.stat-card {
+  min-height: 112px;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.025), transparent),
+    #19191D;
+}
+
+.stat-card p:last-child {
+  line-height: 1.05;
+}
+
+.admin-table th {
+  font-weight: 600;
+}
+
+.admin-table tbody tr:hover {
+  background: rgba(255,255,255,0.025);
+}

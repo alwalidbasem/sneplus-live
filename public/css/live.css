@@ -1,0 +1,96 @@
+/* Live page responsive full-screen mode */
+@media (max-width: 767px) {
+  #view-live { padding: 0 !important; }
+  #phoneWrap { width: 100%; }
+  .phone-frame,
+  .content-mode .phone-frame {
+    width: 100%;
+    height: 100dvh;
+    border-radius: 0;
+    padding: 0;
+    box-shadow: none;
+  }
+  .phone-screen { border-radius: 0; }
+  #mainNav { display: none !important; }
+  #controlPanel {
+    position: fixed;
+    top: 0; right: 0; bottom: 0;
+    width: min(85vw, 330px);
+    z-index: 70;
+    border-radius: 0;
+    border-top: 0; border-bottom: 0; border-right: 0;
+    max-height: 100dvh;
+    overflow-y: auto;
+    transform: translateX(100%);
+    transition: transform .3s ease;
+  }
+  #controlPanel.open { transform: translateX(0); }
+}
+
+#panelCloseBtn { display: none; }
+
+@media (max-width: 767px) {
+  #panelCloseBtn { display: inline-flex; }
+}
+
+#controlPanel {
+  box-shadow: 0 18px 70px -45px rgba(255,45,107,0.55);
+}
+
+#scenarioList .scenario-card {
+  background: rgba(255,255,255,0.018);
+}
+
+#scenarioList .scenario-card:hover {
+  background: rgba(255,255,255,0.045);
+}
+
+.phone-frame {
+  transition: width .25s ease, height .25s ease, border-radius .25s ease, padding .25s ease;
+}
+
+.content-mode #phoneWrap {
+  width: 100%;
+}
+
+.content-mode .phone-screen {
+  box-shadow: inset 0 -160px 110px -95px rgba(0,0,0,0.96);
+}
+
+.content-mode #productArea > div {
+  padding: 16px;
+  border-radius: 24px;
+}
+
+.content-mode #productIcon {
+  width: 64px;
+  height: 64px;
+  font-size: 18px;
+}
+
+.content-mode #productName {
+  font-size: 18px;
+}
+
+.content-mode #productCategory,
+.content-mode #bidLabel {
+  font-size: 12px;
+}
+
+.content-mode #currentBid {
+  font-size: 34px;
+}
+
+.content-mode #bidBtn {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  font-size: 16px;
+}
+
+.content-mode #commentsFeed {
+  max-height: 210px;
+}
+
+.content-mode #commentsFeed > div {
+  font-size: 13px;
+}

@@ -1,0 +1,4 @@
+/* responsive tweaks shared across pages */
+@media (max-width: 767px) {
+  .hide-mobile { display: none !important; }
+}

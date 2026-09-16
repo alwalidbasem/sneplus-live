@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Live — Sneplus Live</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="/js/tailwind-config.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/live.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+</head>
+<body class="bg-ink text-text font-sans antialiased">
+
+<header id="mainNav" class="sticky top-0 z-40 border-b border-line bg-ink/90 backdrop-blur">
+  <div class="max-w-6xl mx-auto px-5 h-16 flex items-center justify-between">
+    <a href="/" class="flex items-center gap-2 shrink-0">
+      <svg width="30" height="30" viewBox="0 0 30 30" fill="none">
+        <circle cx="15" cy="15" r="15" fill="#FF2D6B"/>
+        <path d="M13 8 L9 16 H13.5 L12 22 L21 12 H15.5 L17.5 8 Z" fill="#0C0C0E"/>
+      </svg>
+      <span class="font-display text-lg tracking-tight">SNEPLUS</span>
+      <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-hype text-white leading-none">LIVE</span>
+    </a>
+    <nav class="hidden md:flex items-center gap-1 text-sm font-medium">
+      <a data-nav="home" href="/" class="px-3 py-2 rounded-lg hover:bg-surface transition">Home</a>
+      <a data-nav="live" href="/live" class="px-3 py-2 rounded-lg hover:bg-surface transition">Live Viewer</a>
+      <a data-nav="waitlist" href="/waitlist" class="px-3 py-2 rounded-lg hover:bg-surface transition">Waitlist</a>
+      <a data-nav="admin" href="/admin" class="px-3 py-2 rounded-lg hover:bg-surface transition">Admin</a>
+    </nav>
+    <div class="flex items-center gap-2">
+      <span id="navUserName" class="hidden text-xs font-semibold text-muted"></span>
+      <button id="navAuthBtn" class="text-xs font-bold px-3.5 py-2 rounded-full bg-hype hover:bg-hypedark transition">Log in</button>
+    </div>
+  </div>
+</header>
+
+<main class="max-w-6xl mx-auto">
+<section class="px-5 py-8" id="view-live">
+  <div id="liveWrap" class="flex flex-col lg:flex-row gap-8 items-start justify-center">
+
+    <!-- Control Panel (offcanvas drawer on mobile) -->
+    <div id="controlPanel" class="w-full lg:w-80 bg-surface border border-line rounded-2xl p-5 order-2 lg:order-1">
+      <div class="flex items-center justify-between mb-3">
+        <div>
+          <p class="font-display text-sm mb-1">Simulation Control</p>
+          <p class="text-xs text-muted">Internal tool - configure and run a Live scenario.</p>
+        </div>
+        <button id="panelCloseBtn" class="w-8 h-8 shrink-0 rounded-full border border-line items-center justify-center text-sm">✕</button>
+      </div>
+
+      <label class="text-xs font-semibold text-muted uppercase tracking-wide">Products / Scenario</label>
+      <div id="scenarioList" class="grid grid-cols-1 gap-2 mt-2 mb-2"></div>
+      <p class="text-[11px] text-muted leading-relaxed mb-3">Host can switch products until the first bid. Once bidding starts, other products stay locked until the timer ends.</p>
+      <button id="btnAddItem" class="w-full py-2 mb-5 rounded-xl border border-dashed border-white/25 hover:border-hype hover:text-hype text-sm font-semibold transition">+ Add item</button>
+
+      <label class="text-xs font-semibold text-muted uppercase tracking-wide">Live video URL</label>
+      <input id="liveVideoUrl" type="url" class="w-full mt-2 mb-3 rounded-xl px-3 py-2 text-sm" placeholder="https://example.com/live-demo.mp4" />
+      <button id="btnSaveSetup" class="w-full py-2 mb-3 rounded-xl border border-line hover:border-white/30 text-sm font-semibold transition">Save setup for viewers</button>
+
+      <div class="grid grid-cols-2 gap-2 mb-3">
+        <button id="btnStart" class="col-span-2 py-2.5 rounded-xl bg-hype hover:bg-hypedark font-bold text-sm transition disabled:opacity-40">Start Live</button>
+        <button id="btnPause" class="py-2 rounded-xl bg-surface2 hover:bg-white/10 text-sm font-semibold transition disabled:opacity-40" disabled>Pause</button>
+        <button id="btnResume" class="py-2 rounded-xl bg-surface2 hover:bg-white/10 text-sm font-semibold transition disabled:opacity-40" disabled>Resume</button>
+        <button id="btnRestart" class="py-2 rounded-xl border border-line hover:border-white/30 text-sm font-semibold transition">Restart</button>
+        <button id="btnEndLive" class="col-span-2 py-2 rounded-xl border border-hype/50 text-hype hover:bg-hype/10 text-sm font-semibold transition disabled:opacity-40" disabled>⏹ End live</button>
+      </div>
+
+      <div class="border-t border-line my-4"></div>
+
+      <button id="btnContentMode" class="w-full py-2.5 rounded-xl bg-gold text-ink font-bold text-sm hover:brightness-95 transition mb-2">Enable Content Mode</button>
+      <p class="text-[11px] text-muted leading-relaxed">Content Mode hides this panel for full-screen phone recording. Tap the ✕ on the phone to exit.</p>
+
+      <div class="border-t border-line my-4"></div>
+      <p class="text-xs font-semibold text-muted uppercase tracking-wide mb-2">Event log</p>
+      <div id="eventLog" class="text-[11px] text-muted space-y-1 max-h-40 overflow-y-auto no-scrollbar font-mono"></div>
+    </div>
+
+
+    <!-- ======== PHONE (viewer) ======== -->
+    <div id="phoneWrap" class="order-1 lg:order-2 flex justify-center w-full">
+      <div class="phone-frame relative">
+      <button id="panelToggleBtn" class="md:hidden absolute top-16 left-3 z-30 w-9 h-9 rounded-full bg-black/50 border border-white/15 flex items-center justify-center text-sm">🛠</button>
+
+
+        <div class="phone-screen" id="phoneScreen">
+          <div id="panelBackdrop" class="hidden fixed inset-0 z-[60] bg-black/60"></div>
+
+          <div class="absolute inset-0 hero-video-tex" id="videoLayer"></div>
+          <video id="hostVideo" class="hidden absolute inset-0 w-full h-full object-cover" muted playsinline loop></video>
+
+          <button id="exitContentBtn" class="hidden absolute top-3 right-3 z-30 w-8 h-8 rounded-full bg-black/50 items-center justify-center text-white">✕</button>
+
+          <!-- top bar -->
+          <div class="absolute top-4 left-4 right-4 z-20 flex items-center justify-between">
+            <div class="flex items-center gap-2 bg-black/40 rounded-full pl-1 pr-1 py-1">
+              <div class="w-8 h-8 rounded-full bg-gold flex items-center justify-center text-xs font-bold text-ink">SP</div>
+              <div class="pr-2">
+                <p class="text-xs font-semibold leading-none">sneplus_official</p>
+                <p class="text-[10px] text-muted leading-none mt-0.5" id="hostName">Official Host</p>
+              </div>
+              <button id="followBtn" class="text-[11px] font-bold bg-hype px-3 py-1.5 rounded-full ml-1">Follow</button>
+            </div>
+            <div class="flex flex-col items-end gap-1.5">
+              <div class="flex items-center gap-1 bg-black/50 rounded-full px-2.5 py-1">
+                <span class="w-1.5 h-1.5 rounded-full bg-mint pulse-dot"></span>
+                <span class="text-[11px] font-bold" id="liveStatusPill">LIVE</span>
+              </div>
+              <div class="flex items-center gap-1 bg-black/50 rounded-full px-2.5 py-1">
+                <span class="text-[11px]">👁</span>
+                <span id="viewerCount" class="text-[11px] font-bold">0</span>
+              </div>
+            </div>
+          </div>
+
+          <div id="joinToastArea" class="absolute top-20 left-4 z-20 space-y-1"></div>
+          <div id="countdownOverlay" class="absolute inset-0 z-30 flex items-center justify-center pointer-events-none"></div>
+          <div id="endOverlay" class="hidden absolute inset-0 z-30 bg-black/70 flex-col items-center justify-center text-center p-8"></div>
+
+          <div id="waitingState" class="absolute inset-0 z-10 flex flex-col items-center justify-center text-center px-8">
+            <div class="w-14 h-14 rounded-full border-2 border-white/20 flex items-center justify-center mb-4">
+              <span class="w-2 h-2 rounded-full bg-white/40"></span>
+            </div>
+            <p class="font-semibold text-sm mb-1">Waiting for the Live to start</p>
+            <p class="text-xs text-muted">The host hasn't gone live yet</p>
+          </div>
+
+          <div class="absolute left-0 right-0 bottom-0 z-20 px-3 pb-3 flex flex-col gap-2">
+            <div id="commentsFeed" class="flex flex-col gap-1.5 max-h-40 overflow-hidden justify-end"></div>
+            <div id="winningLine" class="hidden text-xs font-semibold text-gold px-1"></div>
+
+            <div class="flex items-center gap-2">
+              <input id="commentInput" type="text" placeholder="Say something..." maxlength="300"
+                     class="flex-1 bg-black/40 border border-white/15 rounded-full px-4 py-2 text-xs text-white placeholder-white/50 focus:outline-none focus:border-white/40" />
+              <button id="sendCommentBtn" class="w-9 h-9 shrink-0 rounded-full bg-black/40 flex items-center justify-center text-sm">➤</button>
+              <button id="sendHeartBtn" class="w-9 h-9 shrink-0 rounded-full bg-black/40 flex items-center justify-center text-lg">🤍</button>
+            </div>
+
+            <div id="productArea" class="hidden fade-up">
+              <div class="bg-surface2/95 backdrop-blur rounded-2xl p-3 border border-white/10">
+                <div class="flex items-center gap-3 mb-2">
+                  <div id="productIcon" class="w-12 h-12 rounded-xl bg-ink2 flex items-center justify-center text-2xl shrink-0">👟</div>
+                  <div class="flex-1 min-w-0">
+                    <p id="productName" class="text-sm font-semibold truncate">—</p>
+                    <p id="productCategory" class="text-[11px] text-muted">—</p>
+                  </div>
+                  <div class="text-right">
+                    <p class="text-[10px] text-muted leading-none mb-0.5" id="bidLabel">Starting at</p>
+                    <p id="currentBid" class="font-display text-gold text-lg leading-none">$0</p>
+                  </div>
+                </div>
+                <div class="flex items-center gap-2">
+                  <button id="bidBtn" class="flex-1 py-2.5 rounded-full bg-hype hover:bg-hypedark font-bold text-sm transition disabled:opacity-40" disabled>Bid</button>
+                  <div id="bidTimer" class="hidden text-[11px] font-semibold px-2 py-2 rounded-full bg-black/40 whitespace-nowrap">⏱ 0s</div>
+                  <div id="statusPill" class="text-[11px] font-semibold px-3 py-2 rounded-full bg-black/40 whitespace-nowrap">Not started</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+</section>
+</main>
+
+<!-- Bid modal -->
+<div id="bidModal" class="hidden fixed inset-0 z-50 bg-black/70 items-center justify-center p-5">
+  <div class="bg-surface border border-line rounded-2xl p-6 w-full max-w-xs">
+    <p class="font-display text-lg mb-1">Place your bid</p>
+    <p class="text-xs text-muted mb-4">Current bid: <span id="modalCurrentBid" class="text-gold font-semibold">$0</span></p>
+    <label class="text-xs font-semibold text-muted">Your bid ($)</label>
+    <input id="bidInput" type="number" class="w-full mt-1 rounded-xl px-3.5 py-2.5 text-sm" />
+    <p id="bidModalError" class="hidden text-xs text-hype mt-2"></p>
+    <div class="flex gap-2 mt-4">
+      <button id="closeBidBtn" class="flex-1 py-2.5 rounded-full border border-line hover:border-white/30 text-sm font-semibold transition">Cancel</button>
+      <button id="confirmBidBtn" class="flex-1 py-2.5 rounded-full bg-hype hover:bg-hypedark font-bold text-sm transition disabled:opacity-40 disabled:cursor-not-allowed">Place Bid</button>
+    </div>
+  </div>
+</div>
+
+<!-- Buy Now confirm modal -->
+<div id="buyNowModal" class="hidden fixed inset-0 z-50 bg-black/70 items-center justify-center p-5">
+  <div class="bg-surface border border-line rounded-2xl p-6 w-full max-w-xs text-center">
+    <div class="text-3xl mb-2">🛒</div>
+    <p class="font-display text-lg mb-1">Buy it now</p>
+    <p class="text-sm text-muted mb-4">Do you want to buy <span id="buyNowItemName" class="text-text font-semibold"></span> for <span id="buyNowPrice" class="text-gold font-bold"></span>?<br/><span class="text-[11px]">First one who takes it, gets it!</span></p>
+    <div class="flex gap-2">
+      <button id="closeBuyNowBtn" class="flex-1 py-2.5 rounded-full border border-line hover:border-white/30 text-sm font-semibold transition">No</button>
+      <button id="confirmBuyBtn" class="flex-1 py-2.5 rounded-full bg-mint text-ink font-bold text-sm hover:brightness-95 transition">Yes, buy it</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add / edit simulated item modal -->
+<div id="itemModal" class="hidden fixed inset-0 z-50 bg-black/70 items-center justify-center p-5">
+  <div class="bg-surface border border-line rounded-2xl p-6 w-full max-w-sm max-h-[90vh] overflow-y-auto">
+    <p id="itemModalTitle" class="font-display text-lg mb-4">Add item</p>
+    <div class="space-y-3">
+      <div class="grid grid-cols-[72px_1fr] gap-2">
+        <div>
+          <label class="text-xs font-semibold text-muted">Icon</label>
+          <input id="itemIcon" type="text" maxlength="4" class="w-full mt-1 rounded-xl px-3 py-2.5 text-sm text-center" placeholder="SP" />
+        </div>
+        <div>
+          <label class="text-xs font-semibold text-muted">Item name</label>
+          <input id="itemName" type="text" class="w-full mt-1 rounded-xl px-3.5 py-2.5 text-sm" placeholder="Air Icon Runner" />
+        </div>
+      </div>
+      <div>
+        <label class="text-xs font-semibold text-muted">Product image URL</label>
+        <input id="itemImageUrl" type="url" class="w-full mt-1 rounded-xl px-3.5 py-2.5 text-sm" placeholder="https://example.com/product.jpg" />
+      </div>
+      <div>
+        <label class="text-xs font-semibold text-muted">Category</label>
+        <input id="itemCategory" type="text" class="w-full mt-1 rounded-xl px-3.5 py-2.5 text-sm" placeholder="Sneakers" />
+      </div>
+      <div>
+        <label class="text-xs font-semibold text-muted">Start product after (seconds)</label>
+        <input id="itemStartAfter" type="number" min="0" class="w-full mt-1 rounded-xl px-3.5 py-2.5 text-sm" value="30" />
+      </div>
+      <div>
+        <label class="text-xs font-semibold text-muted">Sale type</label>
+        <select id="itemType" class="w-full mt-1 rounded-xl px-3.5 py-2.5 text-sm">
+          <option value="auction">Auction - highest bid wins</option>
+          <option value="buynow">Buy Now - static price, first taker wins</option>
+        </select>
+      </div>
+      <div>
+        <label id="itemStartLabel" class="text-xs font-semibold text-muted">Start Price ($)</label>
+        <input id="itemStart" type="number" min="1" class="w-full mt-1 rounded-xl px-3.5 py-2.5 text-sm" />
+      </div>
+      <div>
+        <label class="text-xs font-semibold text-muted">Viewer events JSON</label>
+        <textarea id="itemJoins" rows="5" class="w-full mt-1 rounded-xl px-3.5 py-2.5 text-xs font-mono" placeholder='[
+  {"name":"Sara","action":"joined","pfp_url":"https://example.com/sara.jpg","after":10},
+  {"name":"Sara","action":"left","pfp_url":"https://example.com/sara.jpg","after":25}
+]'></textarea>
+        <p class="text-[11px] text-muted mt-1 leading-relaxed">Use action "joined" to add a viewer, or "left" to remove one. Each event happens after the product appears.</p>
+      </div>
+      <div>
+        <label class="text-xs font-semibold text-muted">Product comments JSON</label>
+        <textarea id="itemComments" rows="5" class="w-full mt-1 rounded-xl px-3.5 py-2.5 text-xs font-mono" placeholder='[
+  {"name":"Sara","comment":"Hello!","after":15}
+]'></textarea>
+        <p class="text-[11px] text-muted mt-1 leading-relaxed">Each comment happens after the product appears.</p>
+      </div>
+      <div id="itemAuctionFields">
+        <label class="text-xs font-semibold text-muted">Bid sequence JSON</label>
+        <textarea id="itemBids" rows="7" class="w-full mt-1 rounded-xl px-3.5 py-2.5 text-xs font-mono" placeholder='[
+  {"name":"Sara","bid_amount":250,"after":30}
+]'></textarea>
+        <p class="text-[11px] text-muted mt-1 leading-relaxed">Each bid starts after the product appears. Example: product starts after 30s, bid after 21s appears at 51s from live start.</p>
+        <div class="mt-3">
+          <label class="text-xs font-semibold text-muted">Auction duration (seconds)</label>
+          <input id="itemBidDuration" type="number" min="5" class="w-full mt-1 rounded-xl px-3.5 py-2.5 text-sm" value="30" />
+        </div>
+      </div>
+    </div>
+    <p id="itemModalError" class="hidden text-xs text-hype mt-2"></p>
+    <div class="flex gap-2 mt-4">
+      <button id="closeItemBtn" class="flex-1 py-2.5 rounded-full border border-line hover:border-white/30 text-sm font-semibold transition">Cancel</button>
+      <button id="saveItemBtn" class="flex-1 py-2.5 rounded-full bg-hype hover:bg-hypedark font-bold text-sm transition">Save item</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="/js/utils/modal.js"></script>
+<script src="/js/utils/toast.js"></script>
+<script src="/js/utils/helpers.js"></script>
+<script src="/js/api/api.js"></script>
+<script src="/js/api/auth.api.js"></script>
+<script src="/js/app.js"></script>
+<script src="/js/live/live.js"></script>
+</body>
+</html>
+
+
+

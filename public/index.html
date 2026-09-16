@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sneplus Live</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <script src="/js/tailwind-config.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+</head>
+<body class="bg-ink text-text font-sans antialiased">
+
+<header id="mainNav" class="sticky top-0 z-40 border-b border-line bg-ink/90 backdrop-blur">
+  <div class="max-w-6xl mx-auto px-5 h-16 flex items-center justify-between">
+    <a href="/" class="flex items-center gap-2 shrink-0">
+      <svg width="30" height="30" viewBox="0 0 30 30" fill="none">
+        <circle cx="15" cy="15" r="15" fill="#FF2D6B"/>
+        <path d="M13 8 L9 16 H13.5 L12 22 L21 12 H15.5 L17.5 8 Z" fill="#0C0C0E"/>
+      </svg>
+      <span class="font-display text-lg tracking-tight">SNEPLUS</span>
+      <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-hype text-white leading-none">LIVE</span>
+    </a>
+    <nav class="hidden md:flex items-center gap-1 text-sm font-medium">
+      <a data-nav="home" href="/" class="px-3 py-2 rounded-lg hover:bg-surface transition">Home</a>
+      <a data-nav="live" href="/live" class="px-3 py-2 rounded-lg hover:bg-surface transition">Live Viewer</a>
+      <a data-nav="waitlist" href="/waitlist" class="px-3 py-2 rounded-lg hover:bg-surface transition">Waitlist</a>
+      <a data-nav="admin" href="/admin" class="px-3 py-2 rounded-lg hover:bg-surface transition">Admin</a>
+    </nav>
+    <div class="flex items-center gap-2">
+      <button id="navLangBtn" class="text-xs font-semibold px-3 py-1.5 rounded-full border border-line hover:border-white/30 transition">EN / عربي</button>
+      <a href="/waitlist" class="hidden sm:inline-flex text-xs font-bold px-3.5 py-2 rounded-full bg-hype hover:bg-hypedark transition">Join Waitlist</a>
+    </div>
+  </div>
+
+  <nav class="md:hidden flex items-center gap-1 text-xs font-medium px-5 pb-3 -mt-1 overflow-x-auto no-scrollbar">
+    <a data-nav="home" href="/" class="nav-btn px-3 py-1.5 rounded-full border border-line whitespace-nowrap">Home</a>
+    <a data-nav="live" href="/live" class="nav-btn px-3 py-1.5 rounded-full border border-line whitespace-nowrap">Live Viewer</a>
+    <a data-nav="waitlist" href="/waitlist" class="nav-btn px-3 py-1.5 rounded-full border border-line whitespace-nowrap">Waitlist</a>
+    <a data-nav="admin" href="/admin" class="nav-btn px-3 py-1.5 rounded-full border border-line whitespace-nowrap">Admin</a>
+  </nav>
+</header>
+
+<main class="max-w-6xl mx-auto">
+  <section class="px-5">
+    <div class="grid md:grid-cols-2 gap-10 items-center py-14 md:py-20">
+      <div id="homeCopyEn">
+        <p class="text-hype font-bold text-sm tracking-wide mb-4">Live Commerce, reimagined for Sneplus</p>
+        <h1 class="font-display text-4xl sm:text-5xl leading-[1.05] mb-5">E-commerce.<br/>But Live.</h1>
+        <p class="text-muted text-base sm:text-lg leading-relaxed mb-8 max-w-md">
+          Live Commerce is shopping and selling through live video, where customers can interact with the host, ask questions, and buy or bid directly during the live stream.
+        </p>
+        <div class="flex flex-wrap gap-3 mb-10">
+          <a href="/live" class="px-5 py-3 rounded-full bg-hype hover:bg-hypedark font-bold text-sm transition">Watch a Live demo</a>
+          <a href="/waitlist" class="px-5 py-3 rounded-full border border-line hover:border-white/30 font-bold text-sm transition">Join the Waitlist</a>
+        </div>
+        <div class="flex flex-wrap gap-2">
+          <span class="tag-chip px-3 py-1.5 rounded-full text-xs text-muted">👟 Sneakers</span>
+          <span class="tag-chip px-3 py-1.5 rounded-full text-xs text-muted">⌚ Watches</span>
+          <span class="tag-chip px-3 py-1.5 rounded-full text-xs text-muted">📱 Phones</span>
+          <span class="tag-chip px-3 py-1.5 rounded-full text-xs text-muted">👜 Fashion</span>
+          <span class="tag-chip px-3 py-1.5 rounded-full text-xs text-muted">💄 Beauty</span>
+        </div>
+      </div>
+
+      <div id="homeCopyAr" class="hidden ar-font" dir="rtl">
+        <p class="text-hype font-bold text-sm tracking-wide mb-4">SNEPLUS LIVE</p>
+        <h1 class="font-display text-3xl sm:text-4xl leading-[1.3] mb-5">التجارة الإلكترونية… بس على لايف.</h1>
+        <p class="text-muted text-base sm:text-lg leading-relaxed mb-8 max-w-md">
+          Live Commerce هو البيع والشراء من خلال البث المباشر، بحيث يشاهد العميل المنتج ويتفاعل مع البائع ويشتري أو يزايد مباشرة أثناء الـLive.
+        </p>
+        <div class="flex flex-wrap gap-3 mb-10">
+          <a href="/live" class="px-5 py-3 rounded-full bg-hype hover:bg-hypedark font-bold text-sm transition">شاهد عرض لايف</a>
+          <a href="/waitlist" class="px-5 py-3 rounded-full border border-line hover:border-white/30 font-bold text-sm transition">انضم لقائمة الانتظار</a>
+        </div>
+      </div>
+      <div class="flex justify-center md:justify-end">
+        <div class="scale-[0.6] sm:scale-[0.72] md:scale-[0.62] lg:scale-[0.72] -my-24 sm:-my-16 md:-my-28 lg:-my-16 origin-center">
+          <div class="phone-frame">
+            <div class="phone-screen hero-video-tex flex items-end">
+              <div class="absolute top-4 left-4 right-4 flex items-center justify-between">
+                <div class="flex items-center gap-2 bg-black/40 rounded-full pl-1 pr-3 py-1">
+                  <div class="w-7 h-7 rounded-full bg-gold flex items-center justify-center text-[11px] font-bold text-ink">SP</div>
+                  <span class="text-xs font-semibold">sneplus_official</span>
+                </div>
+                <div class="flex items-center gap-1 bg-black/50 rounded-full px-2.5 py-1">
+                  <span class="w-1.5 h-1.5 rounded-full bg-mint pulse-dot"></span>
+                  <span class="text-[11px] font-bold">LIVE</span>
+                </div>
+              </div>
+              <div class="w-full p-4 bg-gradient-to-t from-black/80 to-transparent">
+                <div class="bg-surface2/90 rounded-2xl p-3 flex items-center gap-3">
+                  <div class="w-12 h-12 rounded-xl bg-ink2 flex items-center justify-center text-2xl">👟</div>
+                  <div class="flex-1">
+                    <p class="text-xs font-semibold">Air Icon Runner</p>
+                    <p class="text-[11px] text-muted">Current bid</p>
+                  </div>
+                  <p class="font-display text-gold text-lg">$5</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- how it works -->
+    <div class="border-t border-line py-14">
+      <h2 class="font-display text-2xl mb-8">How a Live drop works</h2>
+      <div class="grid sm:grid-cols-3 gap-5">
+        <div class="bg-surface rounded-2xl p-5 border border-line">
+          <p class="text-hype font-display text-2xl mb-2">1</p>
+          <p class="font-semibold mb-1">Host goes live</p>
+          <p class="text-sm text-muted">A host presents products on camera, viewers join and start chatting instantly.</p>
+        </div>
+        <div class="bg-surface rounded-2xl p-5 border border-line">
+          <p class="text-hype font-display text-2xl mb-2">2</p>
+          <p class="font-semibold mb-1">The bidding opens</p>
+          <p class="text-sm text-muted">A starting price appears, the countdown runs, and bids climb in real time.</p>
+        </div>
+        <div class="bg-surface rounded-2xl p-5 border border-line">
+          <p class="text-hype font-display text-2xl mb-2">3</p>
+          <p class="font-semibold mb-1">Highest bid wins</p>
+          <p class="text-sm text-muted">When the clock hits zero, the top bidder wins the drop and the next item comes up.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="border-t border-line py-14 text-center">
+      <h2 class="font-display text-2xl sm:text-3xl mb-4">Be first when Sneplus Live launches</h2>
+      <p class="text-muted mb-6 max-w-lg mx-auto">Buyers, sellers, and hosts — reserve your spot on the waitlist today.</p>
+      <a href="/waitlist" class="inline-block px-6 py-3 rounded-full bg-hype hover:bg-hypedark font-bold text-sm transition">Join the Waitlist</a>
+    </div>
+  </section>
+</main>
+
+<footer class="border-t border-line py-8 px-5 text-center text-xs text-muted">
+  Sneplus Live — live commerce platform. Auctions and Buy-Now drops, server-verified in real time.
+</footer>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="/js/api/api.js"></script>
+<script src="/js/api/auth.api.js"></script>
+<script src="/js/app.js"></script>
+<script>
+  $(async () => {
+    await App.init({ navActive: 'home' });
+    const applyLang = (lang) => {
+      $('#homeCopyEn').toggleClass('hidden', lang === 'ar');
+      $('#homeCopyAr').toggleClass('hidden', lang !== 'ar');
+    };
+    applyLang(App.lang);
+    $('#navLangBtn').on('click', () => App.toggleLang());
+    $(document).on('sneplus:lang', (e, lang) => applyLang(lang));
+  });
+</script>
+</body>
+</html>
+
