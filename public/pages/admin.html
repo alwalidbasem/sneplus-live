@@ -26,74 +26,75 @@
       <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-hype text-white leading-none">LIVE</span>
     </a>
     <nav class="hidden md:flex items-center gap-1 text-sm font-medium">
-      <a data-nav="home" href="/" class="px-3 py-2 rounded-lg hover:bg-surface transition">Home</a>
-      <a data-nav="live" href="/live" class="px-3 py-2 rounded-lg hover:bg-surface transition">Live Viewer</a>
-      <a data-nav="waitlist" href="/waitlist" class="px-3 py-2 rounded-lg hover:bg-surface transition">Waitlist</a>
-      <a data-nav="admin" href="/admin" class="px-3 py-2 rounded-lg hover:bg-surface transition">Admin</a>
+      <a data-nav="home" data-i18n="common.nav.home" href="/" class="px-3 py-2 rounded-lg hover:bg-surface transition">Home</a>
+      <a data-nav="live" data-i18n="common.nav.live" href="/live" class="px-3 py-2 rounded-lg hover:bg-surface transition">Live Viewer</a>
+      <a data-nav="waitlist" data-i18n="common.nav.waitlist" href="/waitlist" class="px-3 py-2 rounded-lg hover:bg-surface transition">Waitlist</a>
+      <a data-nav="admin" data-i18n="common.nav.admin" href="/admin" class="px-3 py-2 rounded-lg hover:bg-surface transition">Admin</a>
     </nav>
     <div class="flex items-center gap-2">
       <span id="navUserName" class="hidden text-xs font-semibold text-muted"></span>
+      <button id="navLangBtn" class="text-xs font-semibold px-3 py-1.5 rounded-full border border-line hover:border-white/30 transition">EN / عربي</button>
       <button id="navAuthBtn" class="text-xs font-bold px-3.5 py-2 rounded-full bg-hype hover:bg-hypedark transition">Log in</button>
     </div>
   </div>
 
   <nav class="md:hidden flex items-center gap-1 text-xs font-medium px-5 pb-3 -mt-1 overflow-x-auto no-scrollbar">
-    <a data-nav="home" href="/" class="nav-btn px-3 py-1.5 rounded-full border border-line whitespace-nowrap">Home</a>
-    <a data-nav="live" href="/live" class="nav-btn px-3 py-1.5 rounded-full border border-line whitespace-nowrap">Live Viewer</a>
-    <a data-nav="waitlist" href="/waitlist" class="nav-btn px-3 py-1.5 rounded-full border border-line whitespace-nowrap">Waitlist</a>
-    <a data-nav="admin" href="/admin" class="nav-btn px-3 py-1.5 rounded-full border border-line whitespace-nowrap">Admin</a>
+    <a data-nav="home" data-i18n="common.nav.home" href="/" class="nav-btn px-3 py-1.5 rounded-full border border-line whitespace-nowrap">Home</a>
+    <a data-nav="live" data-i18n="common.nav.live" href="/live" class="nav-btn px-3 py-1.5 rounded-full border border-line whitespace-nowrap">Live Viewer</a>
+    <a data-nav="waitlist" data-i18n="common.nav.waitlist" href="/waitlist" class="nav-btn px-3 py-1.5 rounded-full border border-line whitespace-nowrap">Waitlist</a>
+    <a data-nav="admin" data-i18n="common.nav.admin" href="/admin" class="nav-btn px-3 py-1.5 rounded-full border border-line whitespace-nowrap">Admin</a>
   </nav>
 </header>
 <!-- SPLIT1 -->
 <main class="max-w-6xl mx-auto px-5 py-10">
 
   <div id="adminGuard" class="hidden bg-surface border border-line rounded-2xl p-10 text-center">
-    <p class="font-display text-xl mb-2">Admin access required</p>
-    <p class="text-sm text-muted mb-6">Log in with an admin or host account to manage Sneplus Live.</p>
-    <a href="/login" class="inline-flex px-5 py-3 rounded-full bg-hype hover:bg-hypedark font-bold text-sm transition">Go to login</a>
+    <p data-i18n="admin.guard.title" class="font-display text-xl mb-2">Admin access required</p>
+    <p data-i18n="admin.guard.description" class="text-sm text-muted mb-6">Log in with an admin or host account to manage Sneplus Live.</p>
+    <a data-i18n="admin.guard.login" href="/login" class="inline-flex px-5 py-3 rounded-full bg-hype hover:bg-hypedark font-bold text-sm transition">Go to login</a>
   </div>
 
   <div id="adminContent" class="hidden">
     <div class="flex items-center justify-between mb-8 flex-wrap gap-3">
       <div>
-        <h2 class="font-display text-2xl">Admin Console</h2>
-        <p class="text-sm text-muted">Waitlist analytics, optional product catalog, and the local Live simulator.</p>
+        <h2 data-i18n="admin.header.title" class="font-display text-2xl">Admin Console</h2>
+        <p data-i18n="admin.header.description" class="text-sm text-muted">Waitlist analytics, optional product catalog, and the local Live simulator.</p>
       </div>
     </div>
 
     <div class="inline-flex bg-surface border border-line rounded-full p-1 text-sm font-semibold mb-8">
-      <button data-tab="dashboard" class="px-4 py-1.5 rounded-full bg-hype transition">Dashboard</button>
-      <button data-tab="products" class="px-4 py-1.5 rounded-full transition">Products</button>
-      <button data-tab="simulator" class="px-4 py-1.5 rounded-full transition">Live simulator</button>
+      <button data-tab="dashboard" data-i18n="admin.tabs.dashboard" class="px-4 py-1.5 rounded-full bg-hype transition">Dashboard</button>
+      <button data-tab="products" data-i18n="admin.tabs.products" class="px-4 py-1.5 rounded-full transition">Products</button>
+      <button data-tab="simulator" data-i18n="admin.tabs.simulator" class="px-4 py-1.5 rounded-full transition">Live simulator</button>
     </div>
 
     <!-- ===== DASHBOARD ===== -->
     <section id="tab-dashboard">
       <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        <div class="bg-surface border border-line rounded-2xl p-5 stat-card"><p class="text-xs text-muted mb-1">Total waitlist</p><p id="statWaitlist" class="font-display text-3xl">0</p></div>
-        <div class="bg-surface border border-line rounded-2xl p-5 stat-card"><p class="text-xs text-muted mb-1">Buyers</p><p id="statBuyers" class="font-display text-3xl">0</p></div>
-        <div class="bg-surface border border-line rounded-2xl p-5 stat-card"><p class="text-xs text-muted mb-1">Sellers</p><p id="statSellers" class="font-display text-3xl">0</p></div>
-        <div class="bg-surface border border-line rounded-2xl p-5 stat-card"><p class="text-xs text-muted mb-1">Creators / Hosts</p><p id="statCreators" class="font-display text-3xl">0</p></div>
+        <div class="bg-surface border border-line rounded-2xl p-5 stat-card"><p data-i18n="admin.stats.totalWaitlist" class="text-xs text-muted mb-1">Total waitlist</p><p id="statWaitlist" class="font-display text-3xl">0</p></div>
+        <div class="bg-surface border border-line rounded-2xl p-5 stat-card"><p data-i18n="admin.stats.buyers" class="text-xs text-muted mb-1">Buyers</p><p id="statBuyers" class="font-display text-3xl">0</p></div>
+        <div class="bg-surface border border-line rounded-2xl p-5 stat-card"><p data-i18n="admin.stats.sellers" class="text-xs text-muted mb-1">Sellers</p><p id="statSellers" class="font-display text-3xl">0</p></div>
+        <div class="bg-surface border border-line rounded-2xl p-5 stat-card"><p data-i18n="admin.stats.creators" class="text-xs text-muted mb-1">Creators / Hosts</p><p id="statCreators" class="font-display text-3xl">0</p></div>
       </div>
 
       <div class="grid lg:grid-cols-2 gap-5 mb-8">
         <div class="bg-surface border border-line rounded-2xl p-5">
-          <p class="text-sm font-semibold mb-4">Waitlist: countries</p>
+          <p data-i18n="admin.stats.countries" class="text-sm font-semibold mb-4">Waitlist: countries</p>
           <div id="countryBars" class="space-y-3"></div>
         </div>
         <div class="bg-surface border border-line rounded-2xl p-5">
-          <p class="text-sm font-semibold mb-4">Waitlist: categories</p>
+          <p data-i18n="admin.stats.categories" class="text-sm font-semibold mb-4">Waitlist: categories</p>
           <div id="categoryBars" class="space-y-3"></div>
         </div>
       </div>
 
       <div class="bg-surface border border-line rounded-2xl p-5 mb-8">
-        <p class="text-sm font-semibold mb-4">Registrations - last 7 days</p>
+        <p data-i18n="admin.stats.registrations" class="text-sm font-semibold mb-4">Registrations - last 7 days</p>
         <div id="dayChart" class="flex items-end gap-3 h-40"></div>
       </div>
 
       <div class="bg-surface border border-line rounded-2xl p-5 overflow-x-auto">
-        <p class="text-sm font-semibold mb-4">Latest waitlist registrations</p>
+        <p data-i18n="admin.stats.latest" class="text-sm font-semibold mb-4">Latest waitlist registrations</p>
         <table class="w-full text-sm min-w-[560px] admin-table">
           <thead class="text-xs text-muted text-left"><tr><th class="pb-2">Name</th><th class="pb-2">Country</th><th class="pb-2">Type</th><th class="pb-2">Category</th><th class="pb-2">Lang</th><th class="pb-2">Date</th></tr></thead>
           <tbody id="wlTable"></tbody>
@@ -104,8 +105,8 @@
     <!-- ===== PRODUCTS ===== -->
     <section id="tab-products" class="hidden">
       <div class="flex justify-between items-center mb-6">
-        <p class="text-sm text-muted">Optional catalog storage for future production work. The current Live Viewer simulator does not require database products.</p>
-        <button id="btnNewProduct" class="px-4 py-2.5 rounded-full bg-hype hover:bg-hypedark font-bold text-sm transition whitespace-nowrap">+ New product</button>
+        <p data-i18n="admin.products.description" class="text-sm text-muted">Optional catalog storage for future production work. The current Live Viewer simulator does not require database products.</p>
+        <button id="btnNewProduct" data-i18n="admin.products.new" class="px-4 py-2.5 rounded-full bg-hype hover:bg-hypedark font-bold text-sm transition whitespace-nowrap">+ New product</button>
       </div>
       <div id="productCards" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
     </section>
@@ -113,9 +114,9 @@
     <!-- ===== LIVE SIMULATOR ===== -->
     <section id="tab-simulator" class="hidden">
       <div class="bg-surface border border-line rounded-2xl p-6">
-        <p class="font-display text-xl mb-2">Live simulator is frontend-only</p>
-        <p class="text-sm text-muted leading-relaxed mb-5 max-w-2xl">Use the Live Viewer to select a scenario, enter Content Mode, and record the automatic viewers, comments, bids, countdown, and auction ending. It does not create live sessions, products, bids, or orders in the database.</p>
-        <a href="/live" class="inline-flex px-5 py-3 rounded-full bg-hype hover:bg-hypedark font-bold text-sm transition">Open Live Viewer</a>
+        <p data-i18n="admin.simulator.title" class="font-display text-xl mb-2">Live simulator is frontend-only</p>
+        <p data-i18n="admin.simulator.description" class="text-sm text-muted leading-relaxed mb-5 max-w-2xl">Use the Live Viewer to select a scenario, enter Content Mode, and record the automatic viewers, comments, bids, countdown, and auction ending. It does not create live sessions, products, bids, or orders in the database.</p>
+        <a data-i18n="admin.simulator.open" href="/live" class="inline-flex px-5 py-3 rounded-full bg-hype hover:bg-hypedark font-bold text-sm transition">Open Live Viewer</a>
       </div>
     </section>
   </div>
@@ -170,7 +171,7 @@
 </div>
 
 <footer class="border-t border-line mt-10 py-8 px-5 text-center text-xs text-muted">
-  Sneplus Live — live commerce platform. Auctions and Buy-Now drops, server-verified in real time.
+  <span data-i18n="common.footer">Sneplus Live - live commerce platform. Auctions and Buy-Now drops, server-verified in real time.</span>
 </footer>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="/js/utils/modal.js"></script>

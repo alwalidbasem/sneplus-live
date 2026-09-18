@@ -3,17 +3,21 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Log in — Sneplus Live</title>
+  <title>Log in - Sneplus Live</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
   <script src="/js/tailwind-config.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="/css/main.css">
 </head>
 <body class="bg-ink text-text font-sans antialiased">
 
-<main class="max-w-md mx-auto px-5 py-16">
+<main class="max-w-lg mx-auto px-5 py-10 sm:py-16">
+  <div class="flex justify-end mb-6">
+    <button id="navLangBtn" class="text-xs font-semibold px-3 py-1.5 rounded-full border border-line hover:border-white/30 transition">EN / عربي</button>
+  </div>
+
   <a href="/" class="flex items-center justify-center gap-2 mb-10">
     <svg width="34" height="34" viewBox="0 0 30 30" fill="none">
       <circle cx="15" cy="15" r="15" fill="#FF2D6B"/>
@@ -22,43 +26,51 @@
     <span class="font-display text-xl tracking-tight">SNEPLUS LIVE</span>
   </a>
 
-  <div class="bg-surface border border-line rounded-2xl p-6 sm:p-8">
-    <div class="flex justify-center mb-6">
-      <div class="inline-flex bg-ink border border-line rounded-full p-1 text-sm font-semibold">
-        <button id="tabLogin" class="px-4 py-1.5 rounded-full bg-hype transition">Log in</button>
-        <button id="tabRegister" class="px-4 py-1.5 rounded-full transition">Register</button>
+  <div class="bg-surface border border-line rounded-2xl p-5 sm:p-8">
+    <div class="mb-7 text-center">
+      <p data-i18n="login.header.title" class="font-display text-2xl mb-2">Welcome back</p>
+      <p data-i18n="login.header.description" class="text-sm text-muted">Access the admin console or create a buyer account for the live demo.</p>
+    </div>
+
+    <div class="mb-7">
+      <div class="grid grid-cols-2 bg-ink border border-line rounded-2xl sm:rounded-full p-1 text-sm font-semibold gap-1">
+        <button id="tabLogin" data-i18n="login.tabs.login" type="button" class="px-4 py-2.5 rounded-xl sm:rounded-full bg-hype transition">Log in</button>
+        <button id="tabRegister" data-i18n="login.tabs.register" type="button" class="px-4 py-2.5 rounded-xl sm:rounded-full transition text-muted">Register</button>
       </div>
     </div>
 
-    <form id="loginForm" class="space-y-4">
+    <form id="loginForm" class="grid gap-4">
       <div>
-        <label class="text-xs font-semibold text-muted">Email</label>
-        <input id="loginEmail" type="email" required class="w-full mt-1 rounded-xl px-3.5 py-2.5 text-sm" placeholder="you@example.com" />
+        <label data-i18n="login.fields.email" class="text-xs font-semibold text-muted">Email</label>
+        <input id="loginEmail" data-i18n-placeholder="login.placeholders.email" type="email" required class="w-full mt-1 rounded-xl px-3.5 py-2.5 text-sm" placeholder="you@example.com" />
       </div>
       <div>
-        <label class="text-xs font-semibold text-muted">Password</label>
-        <input id="loginPassword" type="password" required class="w-full mt-1 rounded-xl px-3.5 py-2.5 text-sm" placeholder="••••••••" />
+        <label data-i18n="login.fields.password" class="text-xs font-semibold text-muted">Password</label>
+        <input id="loginPassword" data-i18n-placeholder="login.placeholders.password" type="password" required class="w-full mt-1 rounded-xl px-3.5 py-2.5 text-sm" placeholder="••••••••" />
       </div>
       <p id="authError" class="hidden text-xs text-hype"></p>
-      <button id="loginSubmitBtn" type="submit" class="w-full py-3 rounded-full bg-hype hover:bg-hypedark font-bold text-sm transition disabled:opacity-50">Log in</button>
-      <p class="text-[11px] text-muted text-center leading-relaxed">Demo: admin@sneplus.live / Admin123!<br/>Buyer: ali@ex.com / Buyer123!</p>
+      <button id="loginSubmitBtn" data-i18n="login.buttons.login" type="submit" class="w-full py-3 rounded-full bg-hype hover:bg-hypedark font-bold text-sm transition disabled:opacity-50">Log in</button>
+      <p data-i18n="login.demo" class="text-[11px] text-muted text-center leading-relaxed whitespace-pre-line">Demo: admin@sneplus.live / Admin123!
+Buyer: ali@ex.com / Buyer123!</p>
     </form>
 
-    <form id="registerForm" class="space-y-4 hidden">
-      <div>
-        <label class="text-xs font-semibold text-muted">Name</label>
-        <input id="regName" type="text" required class="w-full mt-1 rounded-xl px-3.5 py-2.5 text-sm" />
+    <form id="registerForm" class="grid gap-4 hidden">
+      <div class="grid gap-4 sm:grid-cols-2">
+      <div class="sm:col-span-2">
+        <label data-i18n="login.fields.name" class="text-xs font-semibold text-muted">Name</label>
+        <input id="regName" data-i18n-placeholder="login.placeholders.name" type="text" required class="w-full mt-1 rounded-xl px-3.5 py-2.5 text-sm" placeholder="Your name" />
       </div>
       <div>
-        <label class="text-xs font-semibold text-muted">Email</label>
-        <input id="regEmail" type="email" required class="w-full mt-1 rounded-xl px-3.5 py-2.5 text-sm" />
+        <label data-i18n="login.fields.email" class="text-xs font-semibold text-muted">Email</label>
+        <input id="regEmail" data-i18n-placeholder="login.placeholders.email" type="email" required class="w-full mt-1 rounded-xl px-3.5 py-2.5 text-sm" placeholder="you@example.com" />
       </div>
       <div>
-        <label class="text-xs font-semibold text-muted">Password (min 8 chars)</label>
-        <input id="regPassword" type="password" required minlength="8" class="w-full mt-1 rounded-xl px-3.5 py-2.5 text-sm" />
+        <label data-i18n="login.fields.passwordMin" class="text-xs font-semibold text-muted">Password (min 8 chars)</label>
+        <input id="regPassword" data-i18n-placeholder="login.placeholders.password" type="password" required minlength="8" class="w-full mt-1 rounded-xl px-3.5 py-2.5 text-sm" placeholder="••••••••" />
+      </div>
       </div>
       <p id="regError" class="hidden text-xs text-hype"></p>
-      <button id="registerSubmitBtn" type="submit" class="w-full py-3 rounded-full bg-hype hover:bg-hypedark font-bold text-sm transition disabled:opacity-50">Create account</button>
+      <button id="registerSubmitBtn" data-i18n="login.buttons.register" type="submit" class="w-full py-3 rounded-full bg-hype hover:bg-hypedark font-bold text-sm transition disabled:opacity-50">Create account</button>
     </form>
   </div>
 </main>
@@ -78,10 +90,10 @@
 
     const setTab = (tab) => {
       const login = tab === 'login';
-      $('#loginForm, #tabLogin').toggleClass('hidden', !login);
+      $('#loginForm').toggleClass('hidden', !login);
       $('#registerForm').toggleClass('hidden', login);
-      $('#tabLogin').toggleClass('bg-hype', login);
-      $('#tabRegister').toggleClass('bg-hype', !login);
+      $('#tabLogin').toggleClass('bg-hype text-white', login).toggleClass('text-muted', !login);
+      $('#tabRegister').toggleClass('bg-hype text-white', !login).toggleClass('text-muted', login);
     };
     $('#tabLogin').on('click', () => setTab('login'));
     $('#tabRegister').on('click', () => setTab('register'));
@@ -91,26 +103,26 @@
     $('#loginForm').on('submit', async (e) => {
       e.preventDefault();
       $('#authError').addClass('hidden');
-      $('#loginSubmitBtn').prop('disabled', true).text('Logging in...');
+      $('#loginSubmitBtn').prop('disabled', true).text(App.t('login.buttons.loggingIn'));
       try {
         await AuthAPI.login($('#loginEmail').val().trim(), $('#loginPassword').val());
         location.href = safeNext;
       } catch (xhr) {
         showErr('#authError', API.errorText(xhr));
-        $('#loginSubmitBtn').prop('disabled', false).text('Log in');
+        $('#loginSubmitBtn').prop('disabled', false).text(App.t('login.buttons.login'));
       }
     });
 
     $('#registerForm').on('submit', async (e) => {
       e.preventDefault();
       $('#regError').addClass('hidden');
-      $('#registerSubmitBtn').prop('disabled', true).text('Creating...');
+      $('#registerSubmitBtn').prop('disabled', true).text(App.t('login.buttons.creating'));
       try {
         await AuthAPI.register($('#regName').val().trim(), $('#regEmail').val().trim(), $('#regPassword').val());
         location.href = safeNext;
       } catch (xhr) {
         showErr('#regError', API.errorText(xhr));
-        $('#registerSubmitBtn').prop('disabled', false).text('Create account');
+        $('#registerSubmitBtn').prop('disabled', false).text(App.t('login.buttons.register'));
       }
     });
   });

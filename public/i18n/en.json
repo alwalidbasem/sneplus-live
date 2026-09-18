@@ -1,0 +1,188 @@
+{
+  "common": {
+    "language": {
+      "toggle": "EN / عربي",
+      "english": "English",
+      "arabic": "العربية"
+    },
+    "nav": {
+      "home": "Home",
+      "live": "Live Viewer",
+      "waitlist": "Waitlist",
+      "admin": "Admin"
+    },
+    "auth": {
+      "login": "Log in",
+      "logout": "Log out"
+    },
+    "footer": "Sneplus Live - live commerce platform. Auctions and Buy-Now drops, server-verified in real time.",
+    "actions": {
+      "joinWaitlist": "Join the Waitlist",
+      "cancel": "Cancel",
+      "save": "Save"
+    }
+  },
+  "landing": {
+    "hero": {
+      "eyebrow": "Live Commerce, reimagined for Sneplus",
+      "title": "E-commerce. But Live.",
+      "description": "Live Commerce is shopping and selling through live video, where customers can interact with the host, ask questions, and buy or bid directly during the live stream.",
+      "watchDemo": "Watch a Live demo",
+      "joinWaitlist": "Join the Waitlist"
+    },
+    "tags": ["Sneakers", "Watches", "Phones", "Fashion", "Beauty"],
+    "phone": {
+      "host": "sneplus_official",
+      "product": "Air Icon Runner",
+      "bidLabel": "Current bid"
+    },
+    "howItWorks": {
+      "title": "How a Live drop works",
+      "steps": [
+        {
+          "title": "Host goes live",
+          "description": "A host presents products on camera, viewers join and start chatting instantly."
+        },
+        {
+          "title": "The bidding opens",
+          "description": "A starting price appears, the countdown runs, and bids climb in real time."
+        },
+        {
+          "title": "Highest bid wins",
+          "description": "When the clock hits zero, the top bidder wins the drop and the next item comes up."
+        }
+      ]
+    },
+    "launch": {
+      "title": "Be first when Sneplus Live launches",
+      "description": "Buyers, sellers, and hosts - reserve your spot on the waitlist today."
+    }
+  },
+  "waitlist": {
+    "form": {
+      "headline": "SNEPLUS LIVE",
+      "description": "Live Commerce is shopping and selling through live video, where customers can interact with the host, ask questions, and buy or bid directly during the live stream.",
+      "name": "Name",
+      "email": "Email",
+      "country": "Country",
+      "type": "User Type",
+      "category": "Preferred Category",
+      "types": ["Buyer", "Seller", "Creator / Host"],
+      "categories": ["Sneakers", "Watches", "Phones", "Fashion", "Beauty", "Other"],
+      "submit": "Join the Waitlist",
+      "joining": "Joining...",
+      "success": "You're on the list. We'll notify you when Sneplus Live launches.",
+      "duplicateEmail": "This email is already registered.",
+      "needType": "Please select a user type",
+      "backToForm": "Back to form"
+    }
+  },
+  "login": {
+    "header": {
+      "title": "Welcome back",
+      "description": "Access the admin console or create a buyer account for the live demo."
+    },
+    "tabs": {
+      "login": "Log in",
+      "register": "Register"
+    },
+    "fields": {
+      "name": "Name",
+      "email": "Email",
+      "password": "Password",
+      "passwordMin": "Password (min 8 chars)"
+    },
+    "placeholders": {
+      "name": "Your name",
+      "email": "you@example.com",
+      "password": "••••••••"
+    },
+    "buttons": {
+      "login": "Log in",
+      "loggingIn": "Logging in...",
+      "register": "Create account",
+      "creating": "Creating..."
+    },
+    "demo": "Demo: admin@sneplus.live / Admin123!\nBuyer: ali@ex.com / Buyer123!"
+  },
+  "live": {
+    "control": {
+      "title": "Simulation Control",
+      "description": "Internal tool - configure and run a Live scenario.",
+      "scenario": "Products / Scenario",
+      "scenarioHelp": "Host can switch products until the first bid. Once bidding starts, other products stay locked until the timer ends.",
+      "addItem": "+ Add item",
+      "videoUrl": "Live video URL",
+      "saveSetup": "Save setup for viewers",
+      "start": "Start Live",
+      "pause": "Pause",
+      "resume": "Resume",
+      "restart": "Restart",
+      "endLive": "End live",
+      "contentMode": "Enable Content Mode",
+      "contentHelp": "Content Mode hides this panel for full-screen phone recording. Tap the close button on the phone to exit.",
+      "eventLog": "Event log"
+    },
+    "viewer": {
+      "officialHost": "Official Host",
+      "follow": "Follow",
+      "live": "LIVE",
+      "waitingTitle": "Waiting for the Live to start",
+      "waitingBody": "The host hasn't gone live yet",
+      "commentPlaceholder": "Say something...",
+      "startingAt": "Starting at",
+      "notStarted": "Not started",
+      "bid": "Bid"
+    },
+    "bidModal": {
+      "title": "Place your bid",
+      "currentBid": "Current bid:",
+      "yourBid": "Your bid ($)",
+      "confirm": "Place Bid"
+    },
+    "buyNowModal": {
+      "title": "Buy it now",
+      "message": "Do you want to buy this item now?",
+      "no": "No",
+      "yes": "Yes, buy it"
+    }
+  },
+  "admin": {
+    "guard": {
+      "title": "Admin access required",
+      "description": "Log in with an admin or host account to manage Sneplus Live.",
+      "login": "Go to login"
+    },
+    "header": {
+      "title": "Admin Console",
+      "description": "Waitlist analytics, optional product catalog, and the local Live simulator."
+    },
+    "tabs": {
+      "dashboard": "Dashboard",
+      "products": "Products",
+      "simulator": "Live simulator"
+    },
+    "stats": {
+      "totalWaitlist": "Total waitlist",
+      "buyers": "Buyers",
+      "sellers": "Sellers",
+      "creators": "Creators / Hosts",
+      "countries": "Waitlist: countries",
+      "categories": "Waitlist: categories",
+      "registrations": "Registrations - last 7 days",
+      "latest": "Latest waitlist registrations"
+    },
+    "products": {
+      "description": "Optional catalog storage for future production work. The current Live Viewer simulator does not require database products.",
+      "new": "+ New product",
+      "add": "Add product",
+      "edit": "Edit product",
+      "empty": "No products yet. Create your first one."
+    },
+    "simulator": {
+      "title": "Live simulator is frontend-only",
+      "description": "Use the Live Viewer to select a scenario, enter Content Mode, and record the automatic viewers, comments, bids, countdown, and auction ending. It does not create live sessions, products, bids, or orders in the database.",
+      "open": "Open Live Viewer"
+    }
+  }
+}

@@ -23,6 +23,7 @@ const io = new Server(server, {
 const sessionMiddleware = createSessionMiddleware();
 
 app.disable('x-powered-by');
+if (env.trustProxy) app.set('trust proxy', env.trustProxy);
 app.use(helmet({ contentSecurityPolicy: false })); // CSP off: pages use the Tailwind/CDN scripts
 app.use(cors({ origin: env.isDev ? true : false, credentials: true }));
 app.use(express.json({ limit: '1mb' }));

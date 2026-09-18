@@ -2,43 +2,59 @@
 // No database writes, no sockets: this page is a controlled MVP recording tool.
 const LiveSim = {
     scenarios: [
-        { name: 'Air Icon Runner', icon: 'SH', imageUrl: '', category: 'Sneakers', type: 'auction', start: 1, startAfter: 8, bidDuration: 30, videoUrl: '', joins: [
+        { name: 'Air Icon Runner', icon: 'SH', imageUrl: '', category: 'Sneakers', type: 'auction', start: 1, initialViewers: 1, startAfter: 8, auctionStartAfter: 4, bidDuration: 29, countdownAt: 35, videoUrl: '', joins: [
             { after: 3, action: 'joined', name: 'Ali', pfp_url: '' },
-            { after: 10, action: 'joined', name: 'Sara', pfp_url: '' },
-            { after: 26, action: 'left', name: 'Ali', pfp_url: '' }
+            { after: 5, action: 'joined', name: 'Sara', pfp_url: '' },
+            { after: 15, action: 'joined', name: 'Mohammad', pfp_url: '' }
+        ], viewerUpdates: [
+            { after: 23, viewers: 18 },
+            { after: 34, viewers: 31 }
         ], comments: [
-            { after: 15, name: 'Sara', comment: 'Hello!' },
-            { after: 22, name: 'Rana', comment: 'Who has size 42?' }
+            { after: 6, name: 'Sara', comment: 'These look clean.' },
+            { after: 18, name: 'Rana', comment: 'Who has size 42?' },
+            { after: 25, name: 'Omar', comment: 'Ship to Jordan?' },
+            { after: 30, name: 'Lina', comment: 'Last bid is coming.' }
         ], bids: [
-            { after: 7, bid_amount: 1, bidder_username: 'Ali' },
-            { after: 12, bid_amount: 2, bidder_username: 'Mohammad' },
-            { after: 19, bid_amount: 3, bidder_username: 'Sara' },
-            { after: 24, bid_amount: 5, bidder_username: 'Omar' },
-            { after: 28, bid_amount: 7, bidder_username: 'Lina' }
+            { after: 15, bid_amount: 1, bidder_username: 'Ali' },
+            { after: 20, bid_amount: 2, bidder_username: 'Mohammad' },
+            { after: 27, bid_amount: 3, bidder_username: 'Sara' },
+            { after: 32, bid_amount: 5, bidder_username: 'Omar' },
+            { after: 38, bid_amount: 7, bidder_username: 'Lina' }
         ], status: 'pending' },
-        { name: 'iPhone Pro Drop', icon: 'PH', imageUrl: '', category: 'Phones', type: 'auction', start: 1, startAfter: 30, bidDuration: 55, videoUrl: '', joins: [
-            { after: 10, action: 'joined', name: 'Namo', pfp_url: '' }
-        ], comments: [
-            { after: 15, name: 'Sara', comment: 'Hello!' }
+        { name: 'iPhone Pro Drop', icon: 'PH', imageUrl: '', category: 'Phones', type: 'auction', start: 1, initialViewers: 1, startAfter: 6, auctionStartAfter: 5, bidDuration: 42, videoUrl: '', joins: [
+            { after: 4, action: 'joined', name: 'Namo', pfp_url: '' },
+            { after: 12, action: 'joined', name: 'Sara', pfp_url: '' }
+        ], viewerUpdates: [{ after: 30, viewers: 42 }], comments: [
+            { after: 9, name: 'Sara', comment: 'Storage?' },
+            { after: 25, name: 'Namo', comment: 'Sealed box?' }
         ], bids: [
-            { after: 21, bid_amount: 300, bidder_username: 'mohamed' },
-            { after: 31, bid_amount: 350, bidder_username: 'Namo' },
-            { after: 42, bid_amount: 420, bidder_username: 'Sara' }
+            { after: 14, bid_amount: 1, bidder_username: 'Namo' },
+            { after: 19, bid_amount: 10, bidder_username: 'Sara' },
+            { after: 25, bid_amount: 25, bidder_username: 'Ali' },
+            { after: 31, bid_amount: 50, bidder_username: 'Rana' },
+            { after: 38, bid_amount: 75, bidder_username: 'Omar' },
+            { after: 50, bid_amount: 120, bidder_username: 'Lina' }
         ], status: 'pending' },
-        { name: 'Chrono Steel Watch', icon: 'WA', imageUrl: '', category: 'Watches', type: 'auction', start: 10, startAfter: 15, bidDuration: 35, videoUrl: '', joins: [], comments: [], bids: [
-            { after: 8, bid_amount: 20, bidder_username: 'Yousef' },
-            { after: 16, bid_amount: 35, bidder_username: 'Dana' },
-            { after: 28, bid_amount: 85, bidder_username: 'Rana' }
+        { name: 'Chrono Steel Watch', icon: 'WA', imageUrl: '', category: 'Watches', type: 'auction', start: 10, initialViewers: 1, startAfter: 6, auctionStartAfter: 4, bidDuration: 34, videoUrl: '', joins: [{ after: 5, action: 'joined', name: 'Yousef', pfp_url: '' }], viewerUpdates: [{ after: 25, viewers: 22 }], comments: [{ after: 13, name: 'Dana', comment: 'Beautiful dial.' }], bids: [
+            { after: 13, bid_amount: 10, bidder_username: 'Yousef' },
+            { after: 18, bid_amount: 20, bidder_username: 'Dana' },
+            { after: 24, bid_amount: 35, bidder_username: 'Rana' },
+            { after: 31, bid_amount: 50, bidder_username: 'Khaled' },
+            { after: 41, bid_amount: 85, bidder_username: 'Farah' }
         ], status: 'pending' },
-        { name: 'Signature Branded Bag', icon: 'BG', imageUrl: '', category: 'Fashion', type: 'auction', start: 5, startAfter: 18, bidDuration: 38, videoUrl: '', joins: [], comments: [], bids: [
-            { after: 8, bid_amount: 10, bidder_username: 'Farah' },
-            { after: 18, bid_amount: 20, bidder_username: 'Khaled' },
-            { after: 30, bid_amount: 60, bidder_username: 'Nour' }
+        { name: 'Signature Branded Bag', icon: 'BG', imageUrl: '', category: 'Fashion', type: 'auction', start: 5, initialViewers: 1, startAfter: 6, auctionStartAfter: 4, bidDuration: 34, videoUrl: '', joins: [{ after: 4, action: 'joined', name: 'Farah', pfp_url: '' }], viewerUpdates: [{ after: 28, viewers: 27 }], comments: [{ after: 16, name: 'Nour', comment: 'Show the inside please.' }], bids: [
+            { after: 13, bid_amount: 5, bidder_username: 'Farah' },
+            { after: 18, bid_amount: 10, bidder_username: 'Khaled' },
+            { after: 24, bid_amount: 20, bidder_username: 'Nour' },
+            { after: 31, bid_amount: 35, bidder_username: 'Dana' },
+            { after: 41, bid_amount: 60, bidder_username: 'Rana' }
         ], status: 'pending' },
-        { name: 'Mystery Product', icon: 'MY', imageUrl: '', category: 'Other', type: 'auction', start: 1, startAfter: 20, bidDuration: 35, videoUrl: '', joins: [], comments: [], bids: [
-            { after: 6, bid_amount: 5, bidder_username: 'Omar' },
-            { after: 18, bid_amount: 10, bidder_username: 'Ali' },
-            { after: 27, bid_amount: 35, bidder_username: 'Mohammad' }
+        { name: 'Mystery Product', icon: 'MY', imageUrl: '', category: 'Other', type: 'auction', start: 1, initialViewers: 1, startAfter: 6, auctionStartAfter: 4, bidDuration: 34, videoUrl: '', joins: [{ after: 4, action: 'joined', name: 'Omar', pfp_url: '' }], viewerUpdates: [{ after: 29, viewers: 35 }], comments: [{ after: 15, name: 'Ali', comment: 'Open it!' }], bids: [
+            { after: 13, bid_amount: 1, bidder_username: 'Omar' },
+            { after: 18, bid_amount: 5, bidder_username: 'Ali' },
+            { after: 25, bid_amount: 10, bidder_username: 'Mohammad' },
+            { after: 32, bid_amount: 20, bidder_username: 'Sara' },
+            { after: 41, bid_amount: 35, bidder_username: 'Lina' }
         ], status: 'pending' }
     ],
     names: ['Ali', 'Mohammad', 'Sara', 'Omar', 'Lina', 'Yousef', 'Farah', 'Khaled', 'Dana', 'Rana'],
@@ -47,7 +63,11 @@ const LiveSim = {
     events: [],
     fired: 0,
     elapsedMs: 0,
+    itemClockStartedAtMs: null,
+    itemElapsedBeforePauseMs: 0,
     liveStartedAtMs: null,
+    liveElapsedBeforePauseMs: 0,
+    liveClockStartedAtMs: null,
     autoNextTimer: null,
     saveTimer: null,
     configLoaded: false,
@@ -89,7 +109,7 @@ const LiveSim = {
         $('#btnSaveSetup').on('click', () => LiveSim.saveConfig({ quiet: false }));
         $('#btnPause').on('click', () => LiveSim.pause());
         $('#btnResume').on('click', () => LiveSim.resume());
-        $('#btnRestart').on('click', () => LiveSim.reset());
+        $('#btnRestart').on('click', () => LiveSim.restart());
         $('#btnEndLive').on('click', () => {
             if (LiveSim.productLocked()) {
                 Toast.show('A bid is active. Wait until the timer ends before ending this product.', 'info');
@@ -133,7 +153,7 @@ const LiveSim = {
         });
         $('#endOverlay').on('click', '[data-finish]', () => LiveSim.finishLive());
         $('#endOverlay').on('click', '[data-close-overlay]', () => LiveSim.hideOverlay());
-        $('#endOverlay').on('click', '[data-reset]', () => LiveSim.reset());
+        $('#endOverlay').on('click', '[data-reset]', () => LiveSim.restart());
     },
 
     current() {
@@ -146,6 +166,10 @@ const LiveSim = {
 
     userCanBid() {
         return !LiveSim.isAdminUser();
+    },
+
+    isContentMode() {
+        return $('#liveWrap').hasClass('content-mode');
     },
 
     productLocked() {
@@ -181,9 +205,13 @@ const LiveSim = {
                 category: item.category,
                 type: item.type,
                 start: item.start,
+                initialViewers: item.initialViewers || 1,
                 startAfter: item.startAfter,
+                auctionStartAfter: item.auctionStartAfter || 0,
                 bidDuration: item.bidDuration,
+                countdownAt: item.countdownAt,
                 joins: LiveSim.normalizeJoins(item.joins),
+                viewerUpdates: LiveSim.normalizeViewerUpdates(item.viewerUpdates),
                 comments: LiveSim.normalizeComments(item.comments),
                 bids: LiveSim.normalizeBids(item.bids).map((bid) => ({
                     name: bid.name || bid.bidder_username,
@@ -232,6 +260,10 @@ const LiveSim = {
         LiveSim.fired = 0;
         LiveSim.elapsedMs = 0;
         LiveSim.liveStartedAtMs = null;
+        LiveSim.itemClockStartedAtMs = null;
+        LiveSim.itemElapsedBeforePauseMs = 0;
+        LiveSim.liveElapsedBeforePauseMs = 0;
+        LiveSim.liveClockStartedAtMs = null;
         LiveSim.viewers = 0;
         LiveSim.viewerRoster = new Set();
         LiveSim.viewerLeftLog = new Set();
@@ -254,6 +286,12 @@ const LiveSim = {
         $('#btnPause, #btnResume, #btnEndLive').prop('disabled', true);
         LiveSim.renderScenarioList();
         LiveSim.previewItem(LiveSim.current());
+        LiveSim.resetVideo();
+    },
+
+    restart() {
+        LiveSim.reset();
+        setTimeout(() => LiveSim.startLive(), 0);
     },
 
     renderScenarioList() {
@@ -328,41 +366,75 @@ const LiveSim = {
 
     liveSeconds() {
         if (!LiveSim.liveStartedAtMs) return 0;
-        return Math.max(0, (Date.now() - LiveSim.liveStartedAtMs) / 1000);
+        if (!LiveSim.running || !LiveSim.liveClockStartedAtMs) {
+            return Math.max(0, LiveSim.liveElapsedBeforePauseMs / 1000);
+        }
+        return Math.max(0, (LiveSim.liveElapsedBeforePauseMs + (performance.now() - LiveSim.liveClockStartedAtMs)) / 1000);
+    },
+
+    itemSeconds() {
+        if (!LiveSim.itemClockStartedAtMs) return LiveSim.itemElapsedBeforePauseMs / 1000;
+        if (!LiveSim.running) return LiveSim.itemElapsedBeforePauseMs / 1000;
+        return Math.max(0, (LiveSim.itemElapsedBeforePauseMs + (performance.now() - LiveSim.itemClockStartedAtMs)) / 1000);
     },
 
     buildEvents(item, includeIntro, liveNow = 0) {
         const events = [];
         const t0 = Math.max(0, (Number(item.startAfter) || 0) - liveNow);
+        const auctionAt = t0 + Math.max(0, Number(item.auctionStartAfter) || 0);
+        events.push({ t: 0, type: 'VIEWER_UPDATE', viewers: Math.max(0, Number(item.initialViewers) || 1) });
         events.push({ t: t0, type: 'PRODUCT_START' });
         LiveSim.normalizeJoins(item.joins).forEach((join) => {
-            events.push({ t: t0 + join.after, type: 'VIEWER_ACTIVITY', action: join.action, viewer: join });
+            events.push({ t: join.after, type: join.action === 'left' ? 'VIEWER_ACTIVITY' : 'VIEWER_JOIN', action: join.action, viewer: join });
+        });
+        LiveSim.normalizeViewerUpdates(item.viewerUpdates).forEach((update) => {
+            events.push({ t: update.after, type: 'VIEWER_UPDATE', viewers: update.viewers });
         });
         LiveSim.normalizeComments(item.comments).forEach((comment) => {
-            events.push({ t: t0 + comment.after, type: 'COMMENT', user: comment.name, text: comment.comment });
+            events.push({ t: comment.after, type: 'COMMENT', user: comment.name, text: comment.comment });
         });
         if (item.type === 'buynow') {
-            events.push({ t: t0, type: 'BUYNOW_START', amount: item.start });
-            events.push({ t: t0 + 16, type: 'VIEWER_BUY', user: 'Omar' });
-            return events;
+            events.push({ t: auctionAt, type: 'BUYNOW_START', amount: item.start });
+            events.push({ t: auctionAt + 16, type: 'VIEWER_BUY', user: 'Omar' });
+            return LiveSim.sortEvents(events);
         }
 
-        events.push({ t: t0, type: 'AUCTION_START', amount: item.start, duration: item.bidDuration });
+        events.push({ t: auctionAt, type: 'AUCTION_START', amount: item.start, duration: item.bidDuration });
         const normalizedBids = LiveSim.normalizeBids(item.bids);
         normalizedBids.forEach((bid, i) => {
-            const at = t0 + bid.after;
+            const at = bid.after;
             events.push({ t: at, type: 'BID', amount: bid.bid_amount, user: bid.bidder_username || LiveSim.names[i % LiveSim.names.length] });
-            if (i === 2) events.push({ t: at + 2, type: 'VIEWER_UPDATE', viewers: 128 });
         });
-        const lastBidAfter = Math.max(0, ...normalizedBids.map((bid) => bid.after));
-        const duration = Math.max(Number(item.bidDuration) || 30, lastBidAfter + 4);
-        const end = t0 + duration;
+        const lastBidAt = Math.max(auctionAt, ...normalizedBids.map((bid) => bid.after));
+        const duration = Math.max(Number(item.bidDuration) || 30, lastBidAt - auctionAt + 3);
+        const end = auctionAt + duration;
+        const countdownAt = Math.min(end - 3, Number.isFinite(Number(item.countdownAt)) ? Number(item.countdownAt) : end - 3);
         events.find((ev) => ev.type === 'AUCTION_START').duration = duration;
-        events.push({ t: end - 3, type: 'COUNTDOWN', value: 3 });
-        events.push({ t: end - 2, type: 'COUNTDOWN', value: 2 });
-        events.push({ t: end - 1, type: 'COUNTDOWN', value: 1 });
+        events.push({ t: countdownAt, type: 'COUNTDOWN', value: 3 });
+        events.push({ t: countdownAt + 1, type: 'COUNTDOWN', value: 2 });
+        events.push({ t: countdownAt + 2, type: 'COUNTDOWN', value: 1 });
         events.push({ t: end, type: 'AUCTION_END' });
-        return events.sort((a, b) => a.t - b.t);
+        return LiveSim.sortEvents(events);
+    },
+
+    sortEvents(events) {
+        const priority = {
+            VIEWER_UPDATE: 0,
+            VIEWER_JOIN: 1,
+            VIEWER_ACTIVITY: 1,
+            COMMENT: 2,
+            PRODUCT_START: 3,
+            BUYNOW_START: 4,
+            AUCTION_START: 4,
+            BID: 5,
+            COUNTDOWN: 6,
+            VIEWER_BUY: 7,
+            AUCTION_END: 8
+        };
+        return events
+            .map((event, index) => ({ ...event, _order: index }))
+            .sort((a, b) => a.t - b.t || (priority[a.type] ?? 50) - (priority[b.type] ?? 50) || a._order - b._order)
+            .map(({ _order, ...event }) => event);
     },
 
     normalizeBids(bids) {
@@ -400,6 +472,15 @@ const LiveSim = {
                 };
             })
             .filter((join) => join.name)
+            .sort((a, b) => a.after - b.after);
+    },
+
+    normalizeViewerUpdates(updates) {
+        return (Array.isArray(updates) ? updates : [])
+            .map((update) => ({
+                after: Math.max(0, Number(update.after) || 0),
+                viewers: Math.max(0, Math.floor(Number(update.viewers) || 0))
+            }))
             .sort((a, b) => a.after - b.after);
     },
 
@@ -453,6 +534,8 @@ const LiveSim = {
     startLive() {
         LiveSim.saveConfig();
         LiveSim.liveStartedAtMs = Date.now();
+        LiveSim.liveElapsedBeforePauseMs = 0;
+        LiveSim.liveClockStartedAtMs = performance.now();
         LiveSim.startItem(LiveSim.currentIndex, true, true);
     },
 
@@ -473,8 +556,11 @@ const LiveSim = {
         item.status = 'active';
         LiveSim.liveStarted = true;
         if (!LiveSim.liveStartedAtMs) LiveSim.liveStartedAtMs = Date.now();
+        const now = performance.now();
         LiveSim.running = true;
-        LiveSim.applyVideo();
+        LiveSim.itemClockStartedAtMs = now;
+        LiveSim.itemElapsedBeforePauseMs = 0;
+        if (!LiveSim.liveClockStartedAtMs) LiveSim.liveClockStartedAtMs = now;
         LiveSim.events = LiveSim.buildEvents(item, includeIntro, useAbsoluteSchedule ? LiveSim.liveSeconds() : 0);
         LiveSim.fired = 0;
         LiveSim.elapsedMs = 0;
@@ -492,9 +578,11 @@ const LiveSim = {
         $('#btnResume').prop('disabled', true);
         $('#btnEndLive').prop('disabled', false);
         LiveSim.previewItem(item);
+        LiveSim.applyVideo();
         LiveSim.renderScenarioList();
         LiveSim.log(`${item.name} scheduled at ${item.startAfter || 0}s from live start`);
         LiveSim.timer = setInterval(() => LiveSim.tick(), 100);
+        LiveSim.tick();
     },
 
     liveVideoUrl() {
@@ -508,24 +596,69 @@ const LiveSim = {
     applyVideo() {
         const url = LiveSim.liveVideoUrl();
         const video = $('#hostVideo')[0];
+        $('#videoTapOverlay').remove();
         if (!url) {
             $('#hostVideo').addClass('hidden').removeAttr('src');
             $('#videoLayer').removeClass('hidden');
             if (video) video.pause();
+            $('#videoLayer').html('<div class="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[#15151b] to-[#050507] px-8 text-center"><div><p class="font-display text-2xl mb-2">SNEPLUS LIVE</p><p class="text-xs text-white/65">No host video configured. Add an MP4 URL in the internal panel for recordings.</p></div></div>');
             return;
         }
+        $('#videoLayer').empty();
         $('#videoLayer').addClass('hidden');
         $('#hostVideo').removeClass('hidden').attr('src', url);
         if (video) {
-            video.load();
-            video.play().catch(() => {});
+            video.muted = true;
+            video.playsInline = true;
+            video.currentTime = Math.max(0, LiveSim.liveSeconds());
+            if (video.getAttribute('src') !== url) video.load();
+            LiveSim.tryPlayVideo();
         }
+    },
+
+    tryPlayVideo() {
+        const video = $('#hostVideo')[0];
+        if (!video) return;
+        const attempt = video.play();
+        if (!attempt || typeof attempt.catch !== 'function') return;
+        attempt.catch(() => {
+            $('#videoTapOverlay').remove();
+            $('#phoneScreen').append(`
+                <button id="videoTapOverlay" class="absolute inset-0 z-40 bg-black/55 flex flex-col items-center justify-center text-center px-8">
+                    <span class="w-14 h-14 rounded-full bg-white text-ink flex items-center justify-center text-lg font-bold mb-3">Play</span>
+                    <span class="text-sm font-semibold">Tap to start the demo video</span>
+                </button>`);
+            $('#videoTapOverlay').on('click', () => {
+                $('#videoTapOverlay').remove();
+                video.play().catch(() => {});
+            });
+        });
+    },
+
+    resetVideo() {
+        const video = $('#hostVideo')[0];
+        $('#videoTapOverlay').remove();
+        if (video) {
+            video.pause();
+            video.currentTime = 0;
+            video.removeAttribute('src');
+            video.load();
+        }
+        $('#hostVideo').addClass('hidden');
+        $('#videoLayer').removeClass('hidden').empty();
     },
 
     pause() {
         if (!LiveSim.running) return;
+        const now = performance.now();
+        LiveSim.itemElapsedBeforePauseMs += LiveSim.itemClockStartedAtMs ? now - LiveSim.itemClockStartedAtMs : 0;
+        LiveSim.liveElapsedBeforePauseMs += LiveSim.liveClockStartedAtMs ? now - LiveSim.liveClockStartedAtMs : 0;
+        LiveSim.itemClockStartedAtMs = null;
+        LiveSim.liveClockStartedAtMs = null;
         LiveSim.running = false;
         clearInterval(LiveSim.timer);
+        const video = $('#hostVideo')[0];
+        if (video) video.pause();
         $('#liveStatusPill').text('PAUSED');
         $('#btnPause').prop('disabled', true);
         $('#btnResume').prop('disabled', false);
@@ -534,15 +667,20 @@ const LiveSim = {
     resume() {
         if (LiveSim.running) return;
         LiveSim.running = true;
+        LiveSim.itemClockStartedAtMs = performance.now();
+        LiveSim.liveClockStartedAtMs = performance.now();
+        LiveSim.tryPlayVideo();
         $('#liveStatusPill').text('LIVE');
         $('#btnPause').prop('disabled', false);
         $('#btnResume').prop('disabled', true);
+        clearInterval(LiveSim.timer);
         LiveSim.timer = setInterval(() => LiveSim.tick(), 100);
+        LiveSim.tick();
     },
 
     tick() {
-        LiveSim.elapsedMs += 100;
-        const seconds = LiveSim.elapsedMs / 1000;
+        const seconds = LiveSim.itemSeconds();
+        LiveSim.elapsedMs = seconds * 1000;
         while (LiveSim.fired < LiveSim.events.length && LiveSim.events[LiveSim.fired].t <= seconds) {
             LiveSim.fire(LiveSim.events[LiveSim.fired]);
             LiveSim.fired += 1;
@@ -552,8 +690,13 @@ const LiveSim = {
             $('#bidTimer').text(`Timer ${remain}s`);
         }
         if (LiveSim.fired >= LiveSim.events.length) {
+            const now = performance.now();
             clearInterval(LiveSim.timer);
             LiveSim.running = false;
+            LiveSim.itemElapsedBeforePauseMs = LiveSim.elapsedMs;
+            LiveSim.itemClockStartedAtMs = null;
+            LiveSim.liveElapsedBeforePauseMs += LiveSim.liveClockStartedAtMs ? now - LiveSim.liveClockStartedAtMs : 0;
+            LiveSim.liveClockStartedAtMs = null;
         }
     },
 
@@ -566,6 +709,9 @@ const LiveSim = {
                 break;
             case 'VIEWER_ACTIVITY':
                 LiveSim.applyViewerActivity(ev.viewer, ev.action);
+                break;
+            case 'VIEWER_JOIN':
+                LiveSim.applyViewerActivity(ev.viewer, 'joined');
                 break;
             case 'COMMENT':
                 LiveSim.addComment(ev.user, ev.text);
@@ -638,7 +784,13 @@ const LiveSim = {
     },
 
     endBuyNow(user) {
+        const now = performance.now();
         clearInterval(LiveSim.timer);
+        LiveSim.itemElapsedBeforePauseMs = LiveSim.itemSeconds() * 1000;
+        LiveSim.running = false;
+        LiveSim.itemClockStartedAtMs = null;
+        LiveSim.liveElapsedBeforePauseMs += LiveSim.liveClockStartedAtMs ? now - LiveSim.liveClockStartedAtMs : 0;
+        LiveSim.liveClockStartedAtMs = null;
         LiveSim.itemEnded = true;
         const item = LiveSim.current();
         item.status = 'sold';
@@ -664,7 +816,7 @@ const LiveSim = {
     },
 
     scheduleViewerNextProduct() {
-        if (LiveSim.isAdminUser()) return;
+        if (LiveSim.isAdminUser() && !LiveSim.isContentMode()) return;
         clearTimeout(LiveSim.autoNextTimer);
         const minResultHoldMs = 7000;
         const nextIndex = LiveSim.nextScheduledIndex();
@@ -688,7 +840,8 @@ const LiveSim = {
             LiveSim.showViewerWinnerSequence(title, item, winner);
             return;
         }
-        const actions = LiveSim.isAdminUser()
+        const autoProgress = !LiveSim.isAdminUser() || LiveSim.isContentMode();
+        const actions = !autoProgress
             ? `<div class="flex gap-2 justify-center">
                     <button data-reset class="px-4 py-2.5 rounded-full border border-line hover:border-white/30 font-bold text-sm transition">Restart</button>
                     <button data-next class="px-4 py-2.5 rounded-full bg-hype hover:bg-hypedark font-bold text-sm transition">Continue</button>
@@ -744,7 +897,8 @@ const LiveSim = {
 
     showUnsold(item) {
         LiveSim.beforePopup();
-        const actions = LiveSim.isAdminUser()
+        const autoProgress = !LiveSim.isAdminUser() || LiveSim.isContentMode();
+        const actions = !autoProgress
             ? `<div class="flex gap-2 justify-center">
                     <button data-reset class="px-4 py-2.5 rounded-full border border-line hover:border-white/30 font-bold text-sm transition">Restart</button>
                     <button data-next class="px-4 py-2.5 rounded-full bg-hype hover:bg-hypedark font-bold text-sm transition">Continue</button>
@@ -894,8 +1048,11 @@ const LiveSim = {
         $('#itemName').val(item ? item.name : '');
         $('#itemCategory').val(item ? item.category : '');
         $('#itemStartAfter').val(item ? item.startAfter || 0 : 30);
+        $('#itemInitialViewers').val(item ? item.initialViewers || 1 : 1);
         $('#itemType').val(item ? item.type : 'auction');
         $('#itemStart').val(item ? item.start : 1);
+        $('#itemAuctionStartAfter').val(item ? item.auctionStartAfter || 0 : 4);
+        $('#itemCountdownAt').val(item && item.countdownAt !== undefined && item.countdownAt !== null ? item.countdownAt : '');
         $('#itemJoins').val(item && item.joins ? LiveSim.joinsJson(item.joins) : LiveSim.joinsJson([
             { after: 10, action: 'joined', name: 'Sara', pfp_url: 'https://example.com/sara.jpg' },
             { after: 25, action: 'left', name: 'Sara', pfp_url: 'https://example.com/sara.jpg' }
@@ -903,6 +1060,9 @@ const LiveSim = {
         $('#itemComments').val(item && item.comments ? LiveSim.commentsJson(item.comments) : LiveSim.commentsJson([
             { after: 15, name: 'Sara', comment: 'Hello!' }
         ]));
+        $('#itemViewerUpdates').val(item && item.viewerUpdates ? JSON.stringify(LiveSim.normalizeViewerUpdates(item.viewerUpdates), null, 2) : JSON.stringify([
+            { after: 23, viewers: 18 }
+        ], null, 2));
         $('#itemBids').val(item && item.bids ? LiveSim.bidJson(item.bids) : LiveSim.bidJson([
             { after: 30, bid_amount: 250, name: 'Sara' }
         ]));
@@ -926,6 +1086,10 @@ const LiveSim = {
         const type = $('#itemType').val();
         const start = Number($('#itemStart').val());
         const startAfter = Math.max(0, Number($('#itemStartAfter').val()) || 0);
+        const initialViewers = Math.max(0, Math.floor(Number($('#itemInitialViewers').val()) || 0));
+        const auctionStartAfter = Math.max(0, Number($('#itemAuctionStartAfter').val()) || 0);
+        const countdownRaw = String($('#itemCountdownAt').val() || '').trim();
+        const countdownAt = countdownRaw ? Math.max(0, Number(countdownRaw) || 0) : null;
         const fail = (message) => $('#itemModalError').text(message).removeClass('hidden');
         if (!name) return fail('Item name is required.');
         if (!start || start < 1) return fail('Enter a price of at least $1.');
@@ -941,7 +1105,13 @@ const LiveSim = {
         } catch (e) {
             return fail('Product comments must be valid JSON.');
         }
-        const item = { name, category, icon, imageUrl, type, start, startAfter, joins, comments, status: 'pending' };
+        let viewerUpdates;
+        try {
+            viewerUpdates = LiveSim.normalizeViewerUpdates(LiveSim.parseJsonConfig($('#itemViewerUpdates').val()));
+        } catch (e) {
+            return fail('Viewer count updates must be valid JSON.');
+        }
+        const item = { name, category, icon, imageUrl, type, start, startAfter, initialViewers, auctionStartAfter, countdownAt, joins, viewerUpdates, comments, status: 'pending' };
         if (type === 'auction') {
             let parsedBids;
             try {

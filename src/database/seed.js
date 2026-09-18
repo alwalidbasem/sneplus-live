@@ -9,6 +9,10 @@ const SEEDS_DIR = path.join(__dirname, 'seeds');
 
 async function runSeeds() {
     const file = process.argv[2] || 'demo.sql';
+    if (process.env.NODE_ENV === 'production' && process.env.ALLOW_DEMO_SEED !== 'true') {
+        logger.error('Refusing to run demo seeds in production. Set ALLOW_DEMO_SEED=true only for an intentional non-production demo database.');
+        process.exit(1);
+    }
     const sqlPath = path.join(SEEDS_DIR, file);
     if (!fs.existsSync(sqlPath)) {
         logger.error(`Seed file not found: ${sqlPath}`);

@@ -36,6 +36,15 @@ function normalizeComments(comments) {
         .sort((a, b) => a.after - b.after);
 }
 
+function normalizeViewerUpdates(updates) {
+    return (Array.isArray(updates) ? updates : [])
+        .map((update) => ({
+            after: Math.max(0, number(update.after, 0)),
+            viewers: Math.max(0, Math.floor(number(update.viewers, 0)))
+        }))
+        .sort((a, b) => a.after - b.after);
+}
+
 function normalizeBids(bids) {
     return (Array.isArray(bids) ? bids : [])
         .map((bid) => {
@@ -56,7 +65,8 @@ function normalizeProduct(product = {}) {
     const type = product.type === 'buynow' ? 'buynow' : 'auction';
     const bids = normalizeBids(product.bids);
     const start = Math.max(1, number(product.start, 1));
-    const bidDuration = Math.max(5, number(product.bidDuration, 30), ...bids.map((bid) => bid.after + 4));
+    const auctionStartAfter = Math.max(0, number(product.auctionStartAfter, 0));
+    const bidDuration = Math.max(5, number(product.bidDuration, 30), ...bids.map((bid) => bid.after - auctionStartAfter + 3));
     return {
         name: text(product.name, 200) || 'Untitled product',
         icon: text(product.icon, 4) || 'IT',
@@ -64,9 +74,13 @@ function normalizeProduct(product = {}) {
         category: text(product.category, 80) || 'Other',
         type,
         start,
+        initialViewers: Math.max(0, Math.floor(number(product.initialViewers, 1))),
         startAfter: Math.max(0, number(product.startAfter, 0)),
+        auctionStartAfter,
         bidDuration,
+        countdownAt: product.countdownAt === undefined ? null : Math.max(0, number(product.countdownAt, 0)),
         joins: normalizeViewerEvents(product.joins),
+        viewerUpdates: normalizeViewerUpdates(product.viewerUpdates),
         comments: normalizeComments(product.comments),
         bids: type === 'auction' ? bids : [],
         status: 'pending'

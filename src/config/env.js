@@ -4,6 +4,7 @@ const config = {
     env: process.env.NODE_ENV || 'development',
     port: parseInt(process.env.PORT, 10) || 3000,
     isDev: (process.env.NODE_ENV || 'development') === 'development',
+    trustProxy: parseInt(process.env.TRUST_PROXY, 10) || 0,
 
     db: {
         host: process.env.DB_HOST || 'localhost',
