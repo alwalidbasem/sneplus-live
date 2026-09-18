@@ -32,6 +32,7 @@ app.use(sessionMiddleware);
 
 // static frontend
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/js/sim', express.static(path.join(__dirname, 'src', 'simulation')));
 app.use('/videos', express.static(path.join(__dirname, 'videos')));
 
 // clean page routes

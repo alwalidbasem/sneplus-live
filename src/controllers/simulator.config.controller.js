@@ -1,103 +1,35 @@
 const simulatorConfig = require('../models/simulator.config.model');
 const { success } = require('../utils/response');
-
-function text(value, max = 500) {
-    return String(value || '').trim().slice(0, max);
-}
-
-function number(value, fallback = 0) {
-    const parsed = Number(value);
-    return Number.isFinite(parsed) ? parsed : fallback;
-}
-
-function normalizeViewerEvents(events) {
-    return (Array.isArray(events) ? events : [])
-        .map((event) => {
-            const rawAction = text(event.action || event.event || event.type, 20).toLowerCase();
-            return {
-                after: Math.max(0, number(event.after, 0)),
-                action: ['left', 'leave', 'leaved'].includes(rawAction) ? 'left' : 'joined',
-                name: text(event.name, 120),
-                pfp_url: text(event.pfp_url || event.pfpUrl, 1000)
-            };
-        })
-        .filter((event) => event.name)
-        .sort((a, b) => a.after - b.after);
-}
-
-function normalizeComments(comments) {
-    return (Array.isArray(comments) ? comments : [])
-        .map((comment) => ({
-            after: Math.max(0, number(comment.after, 0)),
-            name: text(comment.name || comment.user, 120),
-            comment: text(comment.comment || comment.text, 300)
-        }))
-        .filter((comment) => comment.name && comment.comment)
-        .sort((a, b) => a.after - b.after);
-}
-
-function normalizeViewerUpdates(updates) {
-    return (Array.isArray(updates) ? updates : [])
-        .map((update) => ({
-            after: Math.max(0, number(update.after, 0)),
-            viewers: Math.max(0, Math.floor(number(update.viewers, 0)))
-        }))
-        .sort((a, b) => a.after - b.after);
-}
-
-function normalizeBids(bids) {
-    return (Array.isArray(bids) ? bids : [])
-        .map((bid) => {
-            const name = text(bid.name || bid.bidder_username, 120);
-            return {
-                after: Math.max(0, number(bid.after, 0)),
-                name,
-                bidder_username: name,
-                bid_amount: number(bid.bid_amount, 0)
-            };
-        })
-        .filter((bid) => bid.bid_amount > 0)
-        .sort((a, b) => a.after - b.after);
-}
-
-function normalizeProduct(product = {}) {
-    product = product && typeof product === 'object' ? product : {};
-    const type = product.type === 'buynow' ? 'buynow' : 'auction';
-    const bids = normalizeBids(product.bids);
-    const start = Math.max(1, number(product.start, 1));
-    const auctionStartAfter = Math.max(0, number(product.auctionStartAfter, 0));
-    const bidDuration = Math.max(5, number(product.bidDuration, 30), ...bids.map((bid) => bid.after - auctionStartAfter + 3));
-    return {
-        name: text(product.name, 200) || 'Untitled product',
-        icon: text(product.icon, 4) || 'IT',
-        imageUrl: text(product.imageUrl || product.image_url, 1000),
-        category: text(product.category, 80) || 'Other',
-        type,
-        start,
-        initialViewers: Math.max(0, Math.floor(number(product.initialViewers, 1))),
-        startAfter: Math.max(0, number(product.startAfter, 0)),
-        auctionStartAfter,
-        bidDuration,
-        countdownAt: product.countdownAt === undefined ? null : Math.max(0, number(product.countdownAt, 0)),
-        joins: normalizeViewerEvents(product.joins),
-        viewerUpdates: normalizeViewerUpdates(product.viewerUpdates),
-        comments: normalizeComments(product.comments),
-        bids: type === 'auction' ? bids : [],
-        status: 'pending'
-    };
-}
+const { validationError } = require('../middleware/validation.middleware');
+const { DEFAULT_SCENARIOS } = require('../simulation/defaultScenarios');
+const { normalizeScenario, validateTimeline } = require('../simulation/timeline');
 
 async function getConfig(req, res) {
     const config = await simulatorConfig.readConfig();
+    // When nothing was saved yet, serve the shared default scenarios
+    // (single source of truth in src/simulation/defaultScenarios.js).
+    if (!config.products.length) {
+        config.products = DEFAULT_SCENARIOS.map(normalizeScenario);
+    }
     success(res, { config });
 }
 
 async function updateConfig(req, res) {
+    const products = (Array.isArray(req.body.products) ? req.body.products : []).map(normalizeScenario);
+
+    for (const product of products) {
+        const issues = validateTimeline(product);
+        if (issues.length) {
+            throw validationError(`Invalid timeline for "${product.name}": ${issues.join(' ')}`);
+        }
+    }
+
     const config = await simulatorConfig.writeConfig({
-        liveVideoUrl: text(req.body.liveVideoUrl, 1000),
-        products: (Array.isArray(req.body.products) ? req.body.products : []).map(normalizeProduct)
+        liveVideoUrl: String(req.body.liveVideoUrl || '').trim().slice(0, 1000),
+        products
     });
     success(res, { config });
 }
 
 module.exports = { getConfig, updateConfig };
+
