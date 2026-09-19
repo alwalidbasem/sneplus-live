@@ -10,6 +10,12 @@ async function listSessions(req, res, next) {
 
 async function getSession(req, res, next) {
     const id = Number(req.params.id);
+    if (!Number.isInteger(id) || id <= 0) {
+        return res.status(404).json({
+            success: false,
+            error: { code: 'NOT_FOUND', message: 'Live session not found.' }
+        });
+    }
     const state = await liveService.getLiveState(id);
     if (!state) {
         return res.status(404).json({

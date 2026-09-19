@@ -40,14 +40,24 @@ function register(io, socket) {
 
     socket.on('admin:live:pause', async ({ liveSessionId } = {}, ack) => {
         if (!isAdmin(socket)) return ack && ack(socketFail('FORBIDDEN', 'Admin access required.'));
-        await liveService.pauseLive(io, { liveSessionId: Number(liveSessionId) });
-        ack && ack({ success: true });
+        try {
+            await liveService.pauseLive(io, { liveSessionId: Number(liveSessionId) });
+            ack && ack({ success: true });
+        } catch (err) {
+            logger.error('Pause live failed:', err.message);
+            ack && ack(socketFail(err.code || 'LIVE_PAUSE_FAILED', err.message));
+        }
     });
 
     socket.on('admin:live:resume', async ({ liveSessionId } = {}, ack) => {
         if (!isAdmin(socket)) return ack && ack(socketFail('FORBIDDEN', 'Admin access required.'));
-        await liveService.resumeLive(io, { liveSessionId: Number(liveSessionId) });
-        ack && ack({ success: true });
+        try {
+            await liveService.resumeLive(io, { liveSessionId: Number(liveSessionId) });
+            ack && ack({ success: true });
+        } catch (err) {
+            logger.error('Resume live failed:', err.message);
+            ack && ack(socketFail(err.code || 'LIVE_RESUME_FAILED', err.message));
+        }
     });
 
     socket.on('admin:live:end', async ({ liveSessionId } = {}, ack) => {
@@ -76,18 +86,20 @@ function register(io, socket) {
 
     socket.on('admin:item:end', async ({ liveItemId } = {}, ack) => {
         if (!isAdmin(socket)) return ack && ack(socketFail('FORBIDDEN', 'Admin access required.'));
-        const payload = await auctionService.endAuction(io, Number(liveItemId));
-        ack && ack({ success: true, data: payload });
+        try {
+            const payload = await auctionService.endAuction(io, Number(liveItemId));
+            ack && ack({ success: true, data: payload });
+        } catch (err) {
+            logger.error('End item failed:', err.message);
+            ack && ack(socketFail(err.code || 'ITEM_END_FAILED', err.message));
+        }
     });
 
     socket.on('admin:item:switch', async ({ liveSessionId, liveItemId } = {}, ack) => {
         if (!isAdmin(socket)) return ack && ack(socketFail('FORBIDDEN', 'Admin access required.'));
         try {
-            // Switching cuts the current item short (server finalizes it) then starts the new one.
-            const state = await liveService.getLiveState(Number(liveSessionId));
-            if (state && state.currentItem) {
-                await auctionService.endAuction(io, state.currentItem.id);
-            }
+            // startItem finalizes whatever is currently active (exactly once,
+            // with events) then starts the new item — no double item:ended.
             const payload = await auctionService.startItem(io, {
                 liveSessionId: Number(liveSessionId),
                 liveItemId: Number(liveItemId)

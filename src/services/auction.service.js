@@ -2,7 +2,10 @@
 const liveModel = require('../models/live.model');
 const logger = require('../utils/logger');
 const { roomFor } = require('../utils/helpers');
-const { buildItemPayload, scheduleAuctionEnd, httpError } = require('./auction.finalize');
+const {
+    buildItemPayload, scheduleAuctionEnd, endAuction,
+    finalizeActiveItem, cancelAuctionTimer, httpError
+} = require('./auction.finalize');
 
 // Starts an item (auction or buy-now) inside a live session.
 async function startItem(io, { liveSessionId, liveItemId }) {
@@ -18,10 +21,14 @@ async function startItem(io, { liveSessionId, liveItemId }) {
         throw httpError('ITEM_NOT_AVAILABLE', 'This item cannot be started again.', 400);
     }
 
+    // Finalize whatever item is currently active (auction -> winner/unsold with
+    // events + timer cleanup; buy-now -> unsold) so at most one item is active.
+    await finalizeActiveItem(io, liveSessionId);
+
     const client = await db.connect();
     try {
         await client.query('BEGIN');
-        // Only one active item per session: close any other active item as unsold.
+        // Safety net: close any other active item as unsold (no-op if none).
         await client.query(
             "UPDATE live_session_items SET status = 'unsold', ended_at = NOW() " +
             "WHERE live_session_id = $1 AND status = 'active' AND id != $2",
@@ -66,5 +73,9 @@ module.exports = {
     endAuction: finalize.endAuction,
     buyNow: finalize.buyNow,
     scheduleAuctionEnd: finalize.scheduleAuctionEnd,
-    recoverActiveAuctions: finalize.recoverActiveAuctions
+    recoverActiveAuctions: finalize.recoverActiveAuctions,
+    stopRecoverySweep: finalize.stopRecoverySweep,
+    finalizeActiveItem: finalize.finalizeActiveItem,
+    cancelAuctionTimer: finalize.cancelAuctionTimer,
+    startRecoverySweep: finalize.startRecoverySweep
 };

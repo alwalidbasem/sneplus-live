@@ -19,7 +19,11 @@ const Comments = {
 
     send() {
         const text = $('#commentInput').val().trim();
-        if (!text || !App.user) return;
+        if (!text) return;
+        if (!App.user) {
+            Toast.show('Log in to comment.', 'error');
+            return;
+        }
         LiveSocket.socket.emit('comment:send', { liveSessionId: LiveSocket.liveSessionId, message: text });
         $('#commentInput').val('');
     },

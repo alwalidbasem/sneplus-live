@@ -1,3 +1,4 @@
+const db = require('../config/database');
 const liveModel = require('../models/live.model');
 const bidModel = require('../models/bid.model');
 const commentModel = require('../models/comment.model');
@@ -59,34 +60,60 @@ async function startLive(io, { liveSessionId }) {
 }
 
 async function pauseLive(io, { liveSessionId }) {
-    await require('../models/live.model').updateSession(liveSessionId, { status: 'paused' });
+    const session = await liveModel.findSessionById(liveSessionId);
+    if (!session) throw httpError('SESSION_NOT_FOUND', 'Live session not found.', 404);
+    if (session.status === 'ended') throw httpError('SESSION_ENDED', 'This live session has already ended.', 400);
+    if (session.status === 'paused') return getLiveState(liveSessionId);
+
+    // Freeze the running auction clock: persist the remaining time and clear
+    // the deadline + timer, so a paused live really pauses.
+    const active = await liveModel.findActiveItem(liveSessionId);
+    if (active && active.sale_type === 'auction' && active.auction_ends_at) {
+        const remainingMs = Math.max(0, new Date(active.auction_ends_at).getTime() - Date.now());
+        await db.query(
+            'UPDATE live_session_items SET auction_ends_at = NULL, auction_paused_remaining_ms = $2 WHERE id = $1',
+            [active.id, Math.ceil(remainingMs)]
+        );
+        auctionService.cancelAuctionTimer(active.id);
+        io.to(roomFor(liveSessionId)).emit('item:paused', { liveItemId: active.id, remainingMs });
+    }
+    await liveModel.updateSession(liveSessionId, { status: 'paused' });
     logger.info(`Live paused: session=${liveSessionId}`);
     io.to(roomFor(liveSessionId)).emit('live:paused', { liveSessionId });
     return getLiveState(liveSessionId);
 }
 
 async function resumeLive(io, { liveSessionId }) {
-    await require('../models/live.model').updateSession(liveSessionId, { status: 'live' });
+    const session = await liveModel.findSessionById(liveSessionId);
+    if (!session) throw httpError('SESSION_NOT_FOUND', 'Live session not found.', 404);
+    if (session.status === 'ended') throw httpError('SESSION_ENDED', 'This live session has already ended.', 400);
+    if (session.status === 'live') return getLiveState(liveSessionId);
+
+    // Unfreeze a paused auction: restore its deadline and timer from the
+    // remaining time captured at pause.
+    const active = await liveModel.findActiveItem(liveSessionId);
+    if (active && active.sale_type === 'auction' && active.auction_paused_remaining_ms != null) {
+        const endsAt = new Date(Date.now() + Number(active.auction_paused_remaining_ms));
+        await db.query(
+            'UPDATE live_session_items SET auction_ends_at = $2, auction_paused_remaining_ms = NULL WHERE id = $1',
+            [active.id, endsAt]
+        );
+        auctionService.scheduleAuctionEnd(io, active.id, endsAt);
+        io.to(roomFor(liveSessionId)).emit('item:resumed', { liveItemId: active.id, auctionEndsAt: endsAt });
+    }
+    await liveModel.updateSession(liveSessionId, { status: 'live' });
     logger.info(`Live resumed: session=${liveSessionId}`);
     io.to(roomFor(liveSessionId)).emit('live:resumed', { liveSessionId });
     return getLiveState(liveSessionId);
 }
 
 async function endLive(io, { liveSessionId }) {
-    // End any still-active item first (as unsold) so nothing is left dangling.
-    const active = await liveModel.findActiveItem(liveSessionId);
-    if (active) {
-        if (active.sale_type === 'auction') {
-            await auctionService.endAuction(io, active.id).catch(() => {});
-        } else {
-            await liveModel.updateSession(liveSessionId, {});
-        }
-        await require('../config/database').query(
-            `UPDATE live_session_items SET status = 'unsold', ended_at = NOW()
-             WHERE id = $1 AND status = 'active'`,
-            [active.id]
-        );
-    }
+    const session = await liveModel.findSessionById(liveSessionId);
+    if (!session) throw httpError('SESSION_NOT_FOUND', 'Live session not found.', 404);
+    if (session.status === 'ended') return getLiveState(liveSessionId);
+    // Finalize whatever item is active (auction -> winner/unsold with events;
+    // buy-now -> unsold) so nothing is left dangling with a live timer.
+    await auctionService.finalizeActiveItem(io, liveSessionId);
     await liveModel.updateSession(liveSessionId, { status: 'ended', ended_at: new Date(), current_item_id: null });
     logger.info(`Live ended: session=${liveSessionId}`);
     io.to(roomFor(liveSessionId)).emit('live:ended', { liveSessionId });

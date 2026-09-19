@@ -28,11 +28,15 @@ function register(io, socket) {
 }
 
 function handleDisconnect(io, socket) {
+    // Collect affected rooms first, then mutate — safe under re-entrancy.
+    const affected = [];
     for (const [id, members] of roomMembers.entries()) {
-        if (members.delete(socket.id)) {
-            broadcastCount(io, id).catch(() => {});
-        }
-        if (members.size === 0) roomMembers.delete(id);
+        if (members.delete(socket.id)) affected.push(id);
+    }
+    for (const id of affected) {
+        const members = roomMembers.get(id);
+        if (members && members.size === 0) roomMembers.delete(id);
+        broadcastCount(io, id).catch(() => {});
     }
     require('./comment.socket').clearRateState(socket.id);
 }

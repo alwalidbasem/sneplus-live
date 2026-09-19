@@ -1,6 +1,13 @@
 /* responsive tweaks shared across pages */
 @media (max-width: 767px) {
   .hide-mobile { display: none !important; }
+  .phone-screen{
+    border-radius: 0rem!important;
+  }
+  .content-mode .phone-frame{
+    width: 100%!important;
+    height: 100vh!important;
+  }
 }
 
 /* Mobile nav offcanvas drawer */

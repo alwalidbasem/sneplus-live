@@ -3,7 +3,7 @@ require('dotenv').config();
 const config = {
     env: process.env.NODE_ENV || 'development',
     port: parseInt(process.env.PORT, 10) || 3000,
-    isDev: (process.env.NODE_ENV || 'development') === 'development',
+    isDev: (process.env.NODE_ENV || 'development') !== 'production',
     trustProxy: parseInt(process.env.TRUST_PROXY, 10) || 0,
 
     db: {

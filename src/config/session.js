@@ -16,7 +16,7 @@ function createSessionMiddleware() {
         saveUninitialized: false,
         cookie: {
             httpOnly: true,
-            secure: env.isDev ? false : true,
+            secure: env.env === 'production',
             sameSite: 'lax',
             maxAge: 1000 * 60 * 60 * 24 * 7 // 7 days
         }

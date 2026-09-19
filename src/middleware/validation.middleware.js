@@ -26,6 +26,9 @@ function validateProductInput(body) {
     if (!isNonEmptyString(body.name, 1, 200)) {
         return validationError('Product name is required (max 200 characters).');
     }
+    if (body.image_url && !isValidImageUrl(body.image_url)) {
+        return validationError('image_url must be an internal /uploads/products/ path or an http(s) URL.');
+    }
     if (saleType === 'auction') {
         if (!isPrice(body.start_price)) return validationError('A valid start price (>= 1) is required.');
         if (!isPositiveInt(body.bid_duration_seconds) || body.bid_duration_seconds < 5) {
@@ -35,6 +38,12 @@ function validateProductInput(body) {
         return validationError('A valid static price (>= 1) is required.');
     }
     return null;
+}
+
+// Only allow internal upload paths or http(s) URLs in image fields.
+function isValidImageUrl(url) {
+    if (typeof url !== 'string') return false;
+    return /^\/uploads\/products\/[A-Za-z0-9._-]+$/.test(url) || /^https?:\/\/\S+$/i.test(url);
 }
 
 function validateWaitlistInput(body) {

@@ -4,17 +4,23 @@ window.tailwind.config = {
   theme: {
     extend: {
       colors: {
-        ink:      '#111114',
-        surface:  '#19191D',
-        surface2: '#212127',
+        ink:      '#111111',
+        surface:  '#18181B',
+        surface2: '#232327',
         line:     'rgba(255,255,255,0.09)',
-        hype:     '#FF2D6B',
-        hypedark: '#C71F52',
-        gold:     '#FFC53D',
+        hype:     '#CE0606',
+        hypedark: '#A00505',
+        gold:     '#E6E6E6',
         mint:     '#2ED573',
-        ink2:     '#0C0C0E',
-        text:     '#F2F1ED',
-        muted:    '#9A98A2',
+        alert:    '#B00020',
+        alertdark:'#8B001A',
+        deep:     '#0B0B0F',
+        charcoal: '#111111',
+        softgrey: '#E6E6E6',
+        grey:     '#7A7A7A',
+        ink2:     '#0B0B0F',
+        text:     '#FFFFFF',
+        muted:    '#9C9C9C',
       },
       fontFamily: {
         display: ['Switzer', 'Satoshi', 'Montserrat', 'Inter', 'sans-serif'],
@@ -24,7 +30,7 @@ window.tailwind.config = {
         ar: ['Tajawal', 'sans-serif'],
       },
       boxShadow: {
-        glow: '0 0 0 1px rgba(255,45,107,0.4), 0 8px 40px -8px rgba(255,45,107,0.45)',
+        glow: '0 0 0 1px rgba(206,6,6,0.4), 0 8px 40px -8px rgba(206,6,6,0.45)',
       }
     }
   }

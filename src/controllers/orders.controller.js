@@ -1,6 +1,11 @@
 const orderModel = require('../models/order.model');
 const { success } = require('../utils/response');
 
+function parseId(value) {
+    const id = Number(value);
+    return Number.isInteger(id) && id > 0 ? id : null;
+}
+
 async function listOrders(req, res, next) {
     const isAdmin = ['admin', 'host'].includes(req.session.user.role);
     const orders = isAdmin ? await orderModel.listAll(200) : await orderModel.listForUser(req.session.user.id);
@@ -8,7 +13,14 @@ async function listOrders(req, res, next) {
 }
 
 async function getOrder(req, res, next) {
-    const order = await orderModel.findById(Number(req.params.id));
+    const id = parseId(req.params.id);
+    if (!id) {
+        return res.status(404).json({
+            success: false,
+            error: { code: 'NOT_FOUND', message: 'Order not found.' }
+        });
+    }
+    const order = await orderModel.findById(id);
     if (!order) {
         return res.status(404).json({
             success: false,

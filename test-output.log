@@ -1,0 +1,64 @@
+
+> sneplus-live@1.0.0 test
+> node --test
+
+2026-09-19T04:34:56.726Z [INFO] Running migration: 001_users.sql
+2026-09-19T04:34:56.792Z [INFO] Running migration: 002_waitlist.sql
+2026-09-19T04:34:56.803Z [INFO] Running migration: 003_products.sql
+2026-09-19T04:34:56.814Z [INFO] Running migration: 004_live_sessions.sql
+2026-09-19T04:34:56.822Z [INFO] Running migration: 005_live_session_items.sql
+2026-09-19T04:34:56.830Z [INFO] Running migration: 006_bids.sql
+2026-09-19T04:34:56.844Z [INFO] Running migration: 007_comments.sql
+2026-09-19T04:34:56.852Z [INFO] Running migration: 008_orders.sql
+2026-09-19T04:34:56.862Z [INFO] Running migration: 009_order_items.sql
+2026-09-19T04:34:56.871Z [INFO] Running migration: 010_sessions.sql
+2026-09-19T04:34:56.876Z [INFO] Running migration: 011_waitlist_email_normalized_unique.sql
+2026-09-19T04:34:56.878Z [INFO] Running migration: 012_auction_pause.sql
+2026-09-19T04:34:56.878Z [INFO] Migrations complete.
+2026-09-19T04:34:56.879Z [INFO] Running seed: demo.sql
+2026-09-19T04:34:56.891Z [INFO] Seed complete.
+✔ setup: boot server, log in all roles (1319.9582ms)
+2026-09-19T04:34:58.245Z [INFO] Live started: session=2
+2026-09-19T04:34:58.266Z [INFO] Item started: session=2 item=5 type=auction
+2026-09-19T04:34:58.447Z [WARN] Bid rejected: item=5 user=2 code=TOO_LOW
+2026-09-19T04:34:58.458Z [INFO] Bid accepted: item=5 user=2 amount=5
+✔ bids require authentication and server-side validation (494.7351ms)
+2026-09-19T04:34:58.530Z [INFO] Live started: session=3
+2026-09-19T04:34:58.545Z [INFO] Item started: session=3 item=6 type=auction
+2026-09-19T04:34:58.556Z [INFO] Bid accepted: item=6 user=2 amount=2
+2026-09-19T04:34:58.562Z [INFO] Live paused: session=3
+2026-09-19T04:34:58.570Z [WARN] Bid rejected: item=6 user=2 code=LIVE_PAUSED
+2026-09-19T04:34:58.591Z [INFO] Live resumed: session=3
+2026-09-19T04:34:58.611Z [INFO] Bid accepted: item=6 user=2 amount=3
+✔ pause blocks bids; resume restores the auction clock; state stays consistent (151.5101ms)
+2026-09-19T04:34:58.649Z [INFO] Live started: session=4
+2026-09-19T04:34:58.663Z [INFO] Item started: session=4 item=7 type=auction
+2026-09-19T04:34:58.776Z [INFO] Bid accepted: item=7 user=2 amount=10
+2026-09-19T04:34:58.783Z [INFO] Bid accepted: item=7 user=3 amount=15
+✔ concurrent bids are serialized; final state is consistent (184.3142ms)
+2026-09-19T04:34:58.844Z [INFO] Live started: session=5
+2026-09-19T04:34:58.859Z [INFO] Item started: session=5 item=8 type=auction
+2026-09-19T04:34:58.876Z [INFO] Bid accepted: item=8 user=2 amount=2
+2026-09-19T04:35:03.530Z [INFO] Auction ended (sold): item=5 winner=Ali H. price=5
+2026-09-19T04:35:03.843Z [INFO] Auction ended (sold): item=6 winner=Ali H. price=3
+2026-09-19T04:35:03.923Z [INFO] Auction ended (sold): item=7 winner=Sara M. price=15
+2026-09-19T04:35:04.133Z [INFO] Auction ended (sold): item=8 winner=Ali H. price=2
+2026-09-19T04:35:04.642Z [WARN] Bid rejected: item=8 user=2 code=NOT_ACTIVE
+✔ auction expiration happens exactly once; bids after the end are rejected (5860.4709ms)
+2026-09-19T04:35:04.697Z [INFO] Live started: session=6
+2026-09-19T04:35:04.711Z [INFO] Item started: session=6 item=9 type=buy_now
+2026-09-19T04:35:04.742Z [INFO] Order created: order=1 user=2 item=9 price=99
+2026-09-19T04:35:04.745Z [INFO] Buy Now sold: item=9 user=2 price=99
+2026-09-19T04:35:04.749Z [WARN] Buy Now rejected: item=9 user=3 code=NOT_ACTIVE
+✔ buy-now: exactly one order; second purchase is rejected (133.8342ms)
+2026-09-19T04:35:04.838Z [INFO] Live started: session=7
+2026-09-19T04:35:04.850Z [INFO] Item started: session=7 item=10 type=auction
+2026-09-19T04:35:04.863Z [INFO] Bid accepted: item=10 user=2 amount=3
+2026-09-19T04:35:04.873Z [INFO] Auction ended (sold): item=10 winner=Ali H. price=3
+✔ concurrent endAuction calls finalize exactly once (411.9321ms)
+2026-09-19T04:35:05.247Z [INFO] Live started: session=8
+2026-09-19T04:35:05.265Z [INFO] Item started: session=8 item=11 type=auction
+2026-09-19T04:35:05.283Z [INFO] Bid accepted: item=11 user=2 amount=2
+2026-09-19T04:35:05.290Z [INFO] Recovery: finalizing expired auction item=11
+2026-09-19T04:35:05.296Z [INFO] Auction ended (sold): item=11 winner=Ali H. price=2
+✔ server-restart recovery: expired auctions finalize, live ones reschedule (107.8909ms)

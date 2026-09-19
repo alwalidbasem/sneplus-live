@@ -37,6 +37,8 @@ async function buildItemPayload(liveItemId) {
         bidDurationSeconds: item.bid_duration_seconds,
         auctionStartedAt: item.auction_started_at,
         auctionEndsAt: item.auction_ends_at,
+        auctionPaused: item.auction_paused_remaining_ms != null,
+        auctionRemainingMs: item.auction_paused_remaining_ms != null ? Number(item.auction_paused_remaining_ms) : null,
         finalPrice: item.final_price !== null ? Number(item.final_price) : null,
         winnerUserId: item.winner_user_id,
         currentBid: highest ? Number(highest.amount) : (item.start_price !== null ? Number(item.start_price) : null),
@@ -56,10 +58,27 @@ function scheduleAuctionEnd(io, liveItemId, endsAt) {
     timers.set(liveItemId, handle);
 }
 
+// Cancels a scheduled finalization (used when a live session is paused).
+function cancelAuctionTimer(liveItemId) {
+    const handle = timers.get(liveItemId);
+    if (handle) {
+        clearTimeout(handle);
+        timers.delete(liveItemId);
+    }
+}
+
+// Prevents duplicate concurrent finalization work/emits for the same item.
+// The PostgreSQL row lock inside endAuction already guarantees an exactly-once
+// state transition; this guard also stops duplicate event bursts.
+const finalizing = new Set();
+
 // Finalizes an auction: winner = highest bid, or unsold if no bids.
 
 
 async function endAuction(io, liveItemId) {
+    if (finalizing.has(liveItemId)) return null;
+    finalizing.add(liveItemId);
+    try {
     const client = await db.connect();
     let result;
     try {
@@ -121,6 +140,9 @@ async function endAuction(io, liveItemId) {
     }
     io.to(room).emit('item:ended', payload);
     return payload;
+    } finally {
+        finalizing.delete(liveItemId);
+    }
 }
 
 // Buy Now: transaction + row lock guarantees exactly one winner.
@@ -187,12 +209,52 @@ async function buyNow(io, { userId, displayName, liveItemId }) {
     return { ...payload, orderId: outcome.orderId, price: outcome.price };
 }
 
+// Ensures at most one active item per session: finalizes the currently active
+// item (auction -> winner/unsold with full events; buy-now -> unsold) before a
+// new item starts or the session ends. Returns the finalized payload or null.
+async function finalizeActiveItem(io, liveSessionId) {
+    const active = await liveModel.findActiveItem(liveSessionId);
+    if (!active) return null;
+    if (active.sale_type === 'auction') {
+        return endAuction(io, active.id); // full finalize + events + timer cleanup
+    }
+    const client = await db.connect();
+    try {
+        await client.query('BEGIN');
+        const check = await client.query(
+            `SELECT id FROM live_session_items WHERE id = $1 AND status = 'active' FOR UPDATE`,
+            [active.id]
+        );
+        if (check.rows[0]) {
+            await client.query(
+                `UPDATE live_session_items SET status = 'unsold', ended_at = NOW() WHERE id = $1`,
+                [active.id]
+            );
+        }
+        await client.query('COMMIT');
+    } catch (err) {
+        await client.query('ROLLBACK').catch(() => {});
+        throw err;
+    } finally {
+        client.release();
+    }
+    const payload = await buildItemPayload(active.id);
+    io.to(roomFor(liveSessionId)).emit('item:ended', payload);
+    logger.info(`Buy-now item closed (unsold): item=${active.id}`);
+    return payload;
+}
+
 // Startup recovery: finalize expired auctions, reschedule live ones.
 async function recoverActiveAuctions(io) {
     const result = await db.query(
-        `SELECT id, auction_ends_at FROM live_session_items WHERE status = 'active'`
+        `SELECT i.id, i.auction_ends_at, i.auction_paused_remaining_ms, p.sale_type
+         FROM live_session_items i JOIN products p ON p.id = i.product_id
+         WHERE i.status = 'active'`
     );
     for (const item of result.rows) {
+        if (item.sale_type !== 'auction') continue; // buy-now items stay purchasable
+        // Auction paused before a restart: its clock resumes on live:resume.
+        if (!item.auction_ends_at && item.auction_paused_remaining_ms != null) continue;
         if (item.auction_ends_at && new Date(item.auction_ends_at).getTime() <= Date.now()) {
             logger.info(`Recovery: finalizing expired auction item=${item.id}`);
             await endAuction(io, item.id).catch((err) =>
@@ -201,14 +263,43 @@ async function recoverActiveAuctions(io) {
         } else if (item.auction_ends_at) {
             logger.info(`Recovery: rescheduling auction item=${item.id}`);
             scheduleAuctionEnd(io, item.id, item.auction_ends_at);
+        } else {
+            // Corrupt state: active auction with no deadline and no pause marker.
+            logger.warn(`Recovery: auction item=${item.id} has no deadline; finalizing as unsold`);
+            await endAuction(io, item.id).catch(() => {});
         }
+    }
+}
+
+// Periodic safety net: re-finalizes anything a failed timer left behind and
+// re-arms timers after transient errors. Cheap (one indexed query).
+let sweepTimer = null;
+function startRecoverySweep(io, intervalMs = 30000) {
+    if (sweepTimer) return sweepTimer;
+    sweepTimer = setInterval(() => {
+        recoverActiveAuctions(io).catch((err) =>
+            logger.error('Recovery sweep failed:', err.message)
+        );
+    }, intervalMs);
+    if (sweepTimer.unref) sweepTimer.unref();
+    return sweepTimer;
+}
+
+function stopRecoverySweep() {
+    if (sweepTimer) {
+        clearInterval(sweepTimer);
+        sweepTimer = null;
     }
 }
 
 module.exports = {
     buildItemPayload,
     scheduleAuctionEnd,
+    cancelAuctionTimer,
     endAuction,
+    finalizeActiveItem,
     buyNow,
-    recoverActiveAuctions
+    recoverActiveAuctions,
+    startRecoverySweep,
+    stopRecoverySweep
 };

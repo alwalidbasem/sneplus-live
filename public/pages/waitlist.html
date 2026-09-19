@@ -12,6 +12,7 @@
   <script src="/js/tailwind-config.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="/css/main.css">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 </head>
 <body class="bg-ink text-text font-sans antialiased">
 
@@ -38,16 +39,16 @@
         <p id="wlDesc" class="text-sm text-muted mb-6 leading-relaxed"></p>
         <div class="space-y-4">
           <div>
-            <label id="lblName" class="text-xs font-semibold text-muted"></label>
+            <label id="lblName" for="wlName" class="text-xs font-semibold text-muted"></label>
             <input required id="wlName" type="text" class="w-full mt-1 rounded-xl px-3.5 py-2.5 text-sm" />
           </div>
           <div>
-            <label id="lblEmail" class="text-xs font-semibold text-muted"></label>
+            <label id="lblEmail" for="wlEmail" class="text-xs font-semibold text-muted"></label>
             <input required id="wlEmail" type="email" class="w-full mt-1 rounded-xl px-3.5 py-2.5 text-sm" />
             <p id="wlEmailError" class="hidden text-xs text-hype mt-1"></p>
           </div>
           <div>
-            <label id="lblCountry" class="text-xs font-semibold text-muted"></label>
+            <label id="lblCountry" for="wlCountryBtn" class="text-xs font-semibold text-muted"></label>
             <div class="relative mt-1 wl-dd" id="wlCountryDropdown">
               <input type="hidden" id="wlCountryInput">
               <button type="button" id="wlCountryBtn" class="wl-dd-btn w-full rounded-xl px-3.5 py-2.5 text-sm bg-surface border border-line flex items-center justify-between gap-2 hover:border-white/30 transition" data-dd="wlCountry" aria-haspopup="listbox" aria-expanded="false">
@@ -58,11 +59,10 @@
             </div>
           </div>
           <div>
-            <label id="lblType" class="text-xs font-semibold text-muted"></label>
+            <label id="lblType" for="wlTypeBtn" class="text-xs font-semibold text-muted"></label>
             <div class="relative mt-1 wl-dd" id="wlTypeDropdown">
               <input type="hidden" id="wlTypeInput" required>
-              <button type="button" id="wlTypeBtn" class="wl-dd-btn w-full rounded-xl px-3.5 py-2.5 text-sm bg-surface border border-line flex items-center justify-between gap-2 hover:border-white/30 transition" data-dd="wlType" aria-haspopup="listbox" aria-expanded="false"
-                class="w-full rounded-xl px-3.5 py-2.5 text-sm bg-surface border border-line flex items-center justify-between gap-2 hover:border-white/30 transition">
+              <button type="button" id="wlTypeBtn" class="wl-dd-btn w-full rounded-xl px-3.5 py-2.5 text-sm bg-surface border border-line flex items-center justify-between gap-2 hover:border-white/30 transition" data-dd="wlType" aria-haspopup="listbox" aria-expanded="false">
                 <span id="wlTypeLabel" class="text-muted">-</span>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="shrink-0 text-muted"><path d="M6 9l6 6 6-6"/></svg>
               </button>
@@ -70,7 +70,7 @@
             </div>
           </div>
           <div>
-            <label id="lblCategory" class="text-xs font-semibold text-muted"></label>
+            <label id="lblCategory" for="wlCategoryBtn" class="text-xs font-semibold text-muted"></label>
             <div class="relative mt-1 wl-dd" id="wlCategoryDropdown">
               <input type="hidden" id="wlCategoryInput">
               <button type="button" id="wlCategoryBtn" class="wl-dd-btn w-full rounded-xl px-3.5 py-2.5 text-sm bg-surface border border-line flex items-center justify-between gap-2 hover:border-white/30 transition" data-dd="wlCategory" aria-haspopup="listbox" aria-expanded="false">

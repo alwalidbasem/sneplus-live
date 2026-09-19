@@ -882,7 +882,7 @@ const LiveSim = {
             const resultLabel = item.type === 'buynow' ? 'First purchaser' : 'Top bidder';
             $('#endOverlay').html(`
                 <div class="fade-up max-w-xs w-full">
-                    <div class="mx-auto mb-4 w-24 h-24 rounded-full bg-gold text-ink flex items-center justify-center shadow-[0_0_55px_rgba(255,197,61,0.5)] border-4 border-white/25">
+                    <div class="mx-auto mb-4 w-24 h-24 rounded-full bg-gold text-ink flex items-center justify-center shadow-[0_0_55px_rgba(206,6,6,0.5)] border-4 border-white/25">
                         <div class="text-center">
                             <p class="font-numeric text-4xl leading-none font-bold">1</p>
                             <p class="text-[10px] font-black uppercase leading-none">Prize</p>

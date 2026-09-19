@@ -8,17 +8,26 @@ html.i18n-pending body { visibility: hidden !important; }
 
 :root {
   color-scheme: dark;
-  --color-ink: #111114;
-  --color-ink-2: #0C0C0E;
-  --color-surface: #19191D;
-  --color-surface-2: #212127;
-  --color-hype: #FF2D6B;
-  --color-hype-dark: #C71F52;
-  --color-gold: #FFC53D;
-  --color-mint: #2ED573;
-  --color-text: #F2F1ED;
-  --color-muted: #9A98A2;
-  --color-placeholder: #6e6c74;
+  /* SNEPLUS brand tokens (single source of truth — mirrored in tailwind-config.js) */
+  --color-charcoal: #111111;   /* Charcoal Black — primary text / dark bg */
+  --color-deep: #0B0B0F;       /* Deep Background */
+  --color-soft-grey: #E6E6E6;  /* Soft Grey — secondary surfaces / accent text */
+  --color-grey: #7A7A7A;       /* Medium Grey — secondary text on light */
+  --color-alert: #B00020;      /* errors / rejections */
+  --rgb-alert: 176 0 32;
+  /* Dark theme neutrals (documented derived values) */
+  --color-ink: #111111;
+  --color-ink-2: #0B0B0F;
+  --color-surface: #18181B;
+  --color-surface-2: #232327;
+  --color-hype: #CE0606;       /* Sneplus Red — brand + primary CTA */
+  --rgb-hype: 206 6 6;
+  --color-hype-dark: #A00505;
+  --color-gold: #E6E6E6;       /* price/accent text on dark */
+  --color-mint: #2ED573;       /* semantic success/live */
+  --color-text: #FFFFFF;
+  --color-muted: #9C9C9C;      /* Medium Grey lightened for AA on dark */
+  --color-placeholder: #7A7A7A;
   --color-black: #000000;
   --color-transparent: transparent;
   --color-phone-start: #2a2530;
@@ -26,8 +35,7 @@ html.i18n-pending body { visibility: hidden !important; }
   --color-phone-end: #0c0a0d;
   --rgb-white: 255 255 255;
   --rgb-black: 0 0 0;
-  --rgb-hype: 255 45 107;
-  --rgb-gold: 255 197 61;
+  --rgb-gold: 230 230 230;
 }
 
 /* Keep the footer pinned to the bottom of the viewport on short pages */
@@ -151,10 +159,6 @@ main table p {
 
 input[type="text"], input[type="email"], input[type="password"], input[type="number"], input[type="url"], select, textarea {
   background: var(--color-surface); border: 1px solid rgb(var(--rgb-white) / 0.12); color: var(--color-text);
-}
-input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus,
-input[type="number"]:focus, input[type="url"]:focus, select:focus, textarea:focus {
-  outline: none; border-color: var(--color-hype); box-shadow: 0 0 0 3px rgb(var(--rgb-hype) / 0.18);
 }
 input::placeholder { color: var(--color-placeholder); }
 

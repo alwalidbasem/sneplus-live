@@ -52,24 +52,42 @@ app.use(errorHandler);
 
 initSocket(io, sessionMiddleware);
 
-server.listen(env.port, async () => {
-    logger.info(`Sneplus Live running on http://localhost:${env.port} (${env.env})`);
-    try {
-        await auctionService.recoverActiveAuctions(io);
-    } catch (err) {
-        logger.error('Auction recovery failed:', err.message);
-    }
+if (require.main === module) {
+    server.listen(env.port, async () => {
+        logger.info(`Sneplus Live running on http://localhost:${env.port} (${env.env})`);
+        try {
+            await auctionService.recoverActiveAuctions(io);
+            auctionService.startRecoverySweep(io); // self-healing safety net
+        } catch (err) {
+            logger.error('Auction recovery failed:', err.message);
+        }
+    });
+
+    server.on('error', (err) => {
+        if (err.code === 'EADDRINUSE') {
+            logger.error(`Port ${env.port} is already in use. Stop the other process (e.g. an old "node server.js") or change PORT in .env, then try again.`);
+            process.exit(1);
+        }
+        throw err;
+    });
+}
+
+// Exported for integration tests (they boot the app on an ephemeral port).
+module.exports = { app, server, io };
+
+
+// Graceful shutdown: stop auction timers/sweeps, close Socket.IO + HTTP, exit.
+function shutdown() {
+    logger.info('Shutting down...');
+    auctionService.stopRecoverySweep();
+    io.close();
+    server.close();
+    setTimeout(() => process.exit(0), 1500).unref();
+}
+process.on('SIGTERM', shutdown);
+process.on('SIGINT', shutdown);
+process.on('unhandledRejection', (reason) => logger.error('Unhandled rejection:', reason));
+process.on('uncaughtException', (err) => {
+    logger.error('Uncaught exception:', err);
+    process.exit(1);
 });
-
-server.on('error', (err) => {
-    if (err.code === 'EADDRINUSE') {
-        logger.error(`Port ${env.port} is already in use. Stop the other process (e.g. an old "node server.js") or change PORT in .env, then try again.`);
-        process.exit(1);
-    }
-    throw err;
-});
-
-
-// Graceful shutdown
-process.on('SIGTERM', () => server.close(() => process.exit(0)));
-process.on('SIGINT', () => server.close(() => process.exit(0)));

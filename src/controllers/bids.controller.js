@@ -1,13 +1,22 @@
 const bidModel = require('../models/bid.model');
-const { success } = require('../utils/response');
+const { success, failure } = require('../utils/response');
+
+function parseId(value) {
+    const id = Number(value);
+    return Number.isInteger(id) && id > 0 ? id : null;
+}
 
 async function listSessionBids(req, res, next) {
-    const bids = await bidModel.listBySession(Number(req.params.liveId), 100);
+    const id = parseId(req.params.liveId);
+    if (!id) return failure(res, 'VALIDATION_ERROR', 'Invalid live session id.');
+    const bids = await bidModel.listBySession(id, 100);
     success(res, { bids });
 }
 
 async function listItemBids(req, res, next) {
-    const bids = await bidModel.listByItem(Number(req.params.itemId), 50);
+    const id = parseId(req.params.itemId);
+    if (!id) return failure(res, 'VALIDATION_ERROR', 'Invalid item id.');
+    const bids = await bidModel.listByItem(id, 50);
     success(res, { bids });
 }
 

@@ -1,4 +1,5 @@
 const commentModel = require('../models/comment.model');
+const logger = require('../utils/logger');
 const { roomFor } = require('../utils/helpers');
 const { sanitizeText } = require('../utils/validators');
 const { socketFail } = require('../utils/response');
@@ -25,26 +26,32 @@ function register(io, socket) {
         }
         lastCommentAt.set(socket.id, now);
 
-        const comment = await commentModel.create({
-            liveSessionId: id,
-            userId: user.id,
-            displayName: user.name,
-            message: text
-        });
-        io.to(roomFor(id)).emit('comment:new', {
-            id: comment.id,
-            userId: user.id,
-            displayName: user.name,
-            message: comment.message,
-            createdAt: comment.created_at
-        });
+        try {
+            const comment = await commentModel.create({
+                liveSessionId: id,
+                userId: user.id,
+                displayName: user.name,
+                message: text
+            });
+            io.to(roomFor(id)).emit('comment:new', {
+                id: comment.id,
+                userId: user.id,
+                displayName: user.name,
+                message: comment.message,
+                createdAt: comment.created_at
+            });
+        } catch (err) {
+            logger.error('Comment create failed:', err.message);
+            socket.emit('comment:rejected', socketFail('COMMENT_FAILED', 'Could not send your comment.').error);
+        }
     });
 
     // Hearts/reactions are ephemeral — never stored in PostgreSQL.
     socket.on('reaction:send', ({ liveSessionId, type } = {}) => {
         const id = Number(liveSessionId);
         if (!Number.isInteger(id)) return;
-        io.to(roomFor(id)).emit('reaction:new', { type: type === 'heart' ? 'heart' : 'heart', from: socket.id });
+        if (type !== 'heart') return;
+        io.to(roomFor(id)).emit('reaction:new', { type: 'heart', from: socket.id });
     });
 }
 
