@@ -2,3 +2,21 @@
 @media (max-width: 767px) {
   .hide-mobile { display: none !important; }
 }
+
+/* Mobile nav offcanvas drawer */
+.nav-overlay {
+  position: fixed; inset: 0; background: rgb(var(--rgb-black) / 0.6);
+  opacity: 0; pointer-events: none; transition: opacity .25s ease; z-index: 50;
+}
+.nav-overlay.open { opacity: 1; pointer-events: auto; }
+.nav-offcanvas {
+  position: fixed; top: 0; bottom: 0; inset-inline-start: 0;
+  width: min(82vw, 300px); background: var(--color-surface);
+  border-inline-end: 1px solid rgb(var(--rgb-white) / 0.09);
+  z-index: 60; padding: 1.25rem; overflow-y: auto;
+  transform: translateX(-105%); transition: transform .25s ease;
+  visibility: hidden;
+}
+[dir="rtl"] .nav-offcanvas { transform: translateX(105%); }
+.nav-offcanvas.open { transform: translateX(0) !important; visibility: visible; }
+body.nav-open { overflow: hidden; }

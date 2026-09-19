@@ -1,0 +1,47 @@
+<header id="mainNav" class="sticky top-0 z-40 border-b border-line bg-ink/90 backdrop-blur">
+  <div class="max-w-6xl mx-auto px-5 h-16 flex items-center justify-between">
+    <a href="/" class="flex items-center gap-2 shrink-0">
+      <svg width="30" height="30" viewBox="0 0 30 30" fill="none">
+        <circle cx="15" cy="15" r="15" fill="#FF2D6B"/>
+        <path d="M13 8 L9 16 H13.5 L12 22 L21 12 H15.5 L17.5 8 Z" fill="#0C0C0E"/>
+      </svg>
+      <span class="font-display text-lg tracking-tight">SNEPLUS</span>
+      <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-hype text-white leading-none">LIVE</span>
+    </a>
+    <nav class="hidden md:flex items-center gap-1 text-sm font-medium">
+      <a data-nav="home" data-i18n="common.nav.home" href="/" class="px-3 py-2 rounded-lg hover:bg-surface transition">Home</a>
+      <a data-nav="live" data-i18n="common.nav.live" href="/live" class="px-3 py-2 rounded-lg hover:bg-surface transition">Live Viewer</a>
+      <a data-nav="waitlist" data-i18n="common.nav.waitlist" href="/waitlist" class="px-3 py-2 rounded-lg hover:bg-surface transition">Waitlist</a>
+      <a data-nav="admin" data-i18n="common.nav.admin" href="/admin" class="px-3 py-2 rounded-lg hover:bg-surface transition">Admin</a>
+    </nav>
+    <div class="flex items-center gap-2">
+      <span id="navUserName" class="hidden text-xs font-semibold text-muted"></span>
+      <button id="navMenuBtn" class="md:hidden p-2 rounded-lg transition" aria-label="Menu" aria-expanded="false" aria-controls="navOffcanvas">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+      <button id="navLangBtn" class="nav-lang-btn hide-mobile text-xs font-semibold px-3 py-1.5 rounded-full border border-line hover:border-white/30 transition">EN / عربي</button>
+      <button id="navAuthBtn" class="nav-auth-btn hide-mobile text-xs font-bold px-3.5 py-2 rounded-full bg-hype hover:bg-hypedark transition">Log in</button>
+    </div>
+  </div>
+</header>
+
+<div id="navOverlay" class="nav-overlay md:hidden"></div>
+<aside id="navOffcanvas" class="nav-offcanvas md:hidden" aria-hidden="true">
+  <div class="flex items-center justify-between mb-6">
+    <span class="font-display text-lg tracking-tight">SNEPLUS</span>
+    <button id="navCloseBtn" class="p-2 rounded-lg  transition" aria-label="Close menu">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+  </div>
+  <nav class="mobile-offcanvas flex flex-col gap-1 text-sm font-medium">
+    <a data-nav="home" data-i18n="common.nav.home" href="/" class="nav-btn px-3 py-2.5 rounded-lg">Home</a>
+    <a data-nav="live" data-i18n="common.nav.live" href="/live" class="nav-btn px-3 py-2.5 rounded-lg">Live Viewer</a>
+    <a data-nav="waitlist" data-i18n="common.nav.waitlist" href="/waitlist" class="nav-btn px-3 py-2.5 rounded-lg">Waitlist</a>
+    <a data-nav="admin" data-i18n="common.nav.admin" href="/admin" class="nav-btn px-3 py-2.5 rounded-lg">Admin</a>
+  </nav>
+  <div class="mt-6 pt-4 border-t border-line flex flex-col gap-2">
+    <button id="navLangBtnMobile" class="nav-lang-btn text-xs font-semibold px-3 py-2.5 rounded-full border border-line">EN / عربي</button>
+    <button id="navAuthBtnMobile" class="nav-auth-btn hidden admin-shown text-xs font-bold px-3.5 py-2.5 rounded-full bg-hype hover:bg-hypedark transition">Log in</button>
+    <a data-i18n="common.actions.joinWaitlist" href="/waitlist" class="text-xs admin-hidden font-bold px-3.5 py-2.5 rounded-full bg-hype hover:bg-hypedark transition text-center">Join Waitlist</a>
+  </div>
+</aside>

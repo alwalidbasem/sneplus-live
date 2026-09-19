@@ -28,7 +28,7 @@ const AdminProducts = {
                         </div>
                         <span class="text-[10px] font-bold px-2 py-1 rounded-full ${isAuction ? 'bg-hype text-white' : 'bg-mint text-ink'}">${isAuction ? 'AUCTION' : 'BUY NOW'}</span>
                     </div>
-                    <p class="text-sm text-muted mb-4">${isAuction ? 'Start $' + p.start_price + ' · ' + p.bid_duration_seconds + 's bid duration' : 'Fixed price $' + p.static_price}</p>
+                    <p class="font-numeric text-sm text-muted mb-4">${isAuction ? 'Start $' + p.start_price + ' · ' + p.bid_duration_seconds + 's bid duration' : 'Fixed price $' + p.static_price}</p>
                     <div class="flex gap-2">
                         <button class="act-edit flex-1 py-2 rounded-xl border border-line text-xs font-semibold hover:border-white/30 transition">Edit</button>
                         <button class="act-del flex-1 py-2 rounded-xl bg-hype/10 text-hype text-xs font-semibold hover:bg-hype/20 transition">Delete</button>

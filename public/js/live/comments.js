@@ -39,14 +39,6 @@ const Comments = {
     },
 
     heartAnimation() {
-        const $el = $('<div>').text('🤍').css({
-            position: 'absolute', right: '24px', bottom: '170px',
-            fontSize: '20px', zIndex: 25, transition: 'all 1.2s ease'
-        });
-        $('#phoneScreen').append($el);
-        requestAnimationFrame(() => {
-            $el.css({ transform: 'translateY(-220px) translateX(-10px)', opacity: '0' });
-        });
-        setTimeout(() => $el.remove(), 1300);
+        Helpers.heartFloat($('<div>').text('🤍').css({ position: 'absolute', fontSize: '20px', zIndex: 25 }));
     }
 };

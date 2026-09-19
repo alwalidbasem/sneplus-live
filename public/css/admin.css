@@ -2,8 +2,8 @@
 .stat-card {
   min-height: 112px;
   background:
-    linear-gradient(180deg, rgba(255,255,255,0.025), transparent),
-    #19191D;
+    linear-gradient(180deg, rgb(var(--rgb-white) / 0.025), var(--color-transparent)),
+    var(--color-surface);
 }
 
 .stat-card p:last-child {
@@ -15,5 +15,11 @@
 }
 
 .admin-table tbody tr:hover {
-  background: rgba(255,255,255,0.025);
+  background: rgb(var(--rgb-white) / 0.025);
+}
+.admin-shown{
+  display: block!important;
+}
+.admin-hidden{
+  display: none!important;
 }

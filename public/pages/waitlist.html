@@ -4,46 +4,18 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Waitlist — Sneplus Live</title>
+  <script src="/js/lang-boot.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link href="https://api.fontshare.com/v2/css?f[]=switzer@500,600,700&f[]=satoshi@500,600,700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600;700&family=Montserrat:wght@500;600;700&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
   <script src="/js/tailwind-config.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="stylesheet" href="/css/responsive.css">
 </head>
 <body class="bg-ink text-text font-sans antialiased">
 
-<header id="mainNav" class="sticky top-0 z-40 border-b border-line bg-ink/90 backdrop-blur">
-  <div class="max-w-6xl mx-auto px-5 h-16 flex items-center justify-between">
-    <a href="/" class="flex items-center gap-2 shrink-0">
-      <svg width="30" height="30" viewBox="0 0 30 30" fill="none">
-        <circle cx="15" cy="15" r="15" fill="#FF2D6B"/>
-        <path d="M13 8 L9 16 H13.5 L12 22 L21 12 H15.5 L17.5 8 Z" fill="#0C0C0E"/>
-      </svg>
-      <span class="font-display text-lg tracking-tight">SNEPLUS</span>
-      <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-hype text-white leading-none">LIVE</span>
-    </a>
-    <nav class="hidden md:flex items-center gap-1 text-sm font-medium">
-      <a data-nav="home" data-i18n="common.nav.home" href="/" class="px-3 py-2 rounded-lg hover:bg-surface transition">Home</a>
-      <a data-nav="live" data-i18n="common.nav.live" href="/live" class="px-3 py-2 rounded-lg hover:bg-surface transition">Live Viewer</a>
-      <a data-nav="waitlist" data-i18n="common.nav.waitlist" href="/waitlist" class="px-3 py-2 rounded-lg hover:bg-surface transition">Waitlist</a>
-      <a data-nav="admin" data-i18n="common.nav.admin" href="/admin" class="px-3 py-2 rounded-lg hover:bg-surface transition">Admin</a>
-    </nav>
-    <div class="flex items-center gap-2">
-      <span id="navUserName" class="hidden text-xs font-semibold text-muted"></span>
-      <button id="navLangBtn" class="text-xs font-semibold px-3 py-1.5 rounded-full border border-line hover:border-white/30 transition">EN / عربي</button>
-      <button id="navAuthBtn" class="text-xs font-bold px-3.5 py-2 rounded-full bg-hype hover:bg-hypedark transition">Log in</button>
-    </div>
-  </div>
-
-  <nav class="md:hidden flex items-center gap-1 text-xs font-medium px-5 pb-3 -mt-1 overflow-x-auto no-scrollbar">
-    <a data-nav="home" data-i18n="common.nav.home" href="/" class="nav-btn px-3 py-1.5 rounded-full border border-line whitespace-nowrap">Home</a>
-    <a data-nav="live" data-i18n="common.nav.live" href="/live" class="nav-btn px-3 py-1.5 rounded-full border border-line whitespace-nowrap">Live Viewer</a>
-    <a data-nav="waitlist" data-i18n="common.nav.waitlist" href="/waitlist" class="nav-btn px-3 py-1.5 rounded-full border border-line whitespace-nowrap">Waitlist</a>
-    <a data-nav="admin" data-i18n="common.nav.admin" href="/admin" class="nav-btn px-3 py-1.5 rounded-full border border-line whitespace-nowrap">Admin</a>
-  </nav>
-</header>
+<div data-component="navbar"></div>
 
 <main class="max-w-6xl mx-auto">
   <section class="px-5 py-14">
@@ -76,19 +48,37 @@
           </div>
           <div>
             <label id="lblCountry" class="text-xs font-semibold text-muted"></label>
-            <select required id="wlCountry" class="w-full mt-1 rounded-xl px-3.5 py-2.5 text-sm">
-              <option value="">—</option>
-              <option>Jordan</option><option>Saudi Arabia</option><option>United Arab Emirates</option>
-              <option>Egypt</option><option>Kuwait</option><option>Qatar</option><option>Other</option>
-            </select>
+            <div class="relative mt-1 wl-dd" id="wlCountryDropdown">
+              <input type="hidden" id="wlCountryInput">
+              <button type="button" id="wlCountryBtn" class="wl-dd-btn w-full rounded-xl px-3.5 py-2.5 text-sm bg-surface border border-line flex items-center justify-between gap-2 hover:border-white/30 transition" data-dd="wlCountry" aria-haspopup="listbox" aria-expanded="false">
+                <span id="wlCountryLabel" class="text-muted">-</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="shrink-0 text-muted"><path d="M6 9l6 6 6-6"/></svg>
+              </button>
+              <div id="wlCountryMenu" class="wl-dd-menu hidden absolute z-20 mt-1 w-full rounded-xl border border-line bg-surface2 shadow-lg overflow-hidden max-h-56 overflow-y-auto"></div>
+            </div>
           </div>
           <div>
             <label id="lblType" class="text-xs font-semibold text-muted"></label>
-            <div id="wlTypeGroup" class="grid grid-cols-3 gap-2 mt-1"></div>
+            <div class="relative mt-1 wl-dd" id="wlTypeDropdown">
+              <input type="hidden" id="wlTypeInput" required>
+              <button type="button" id="wlTypeBtn" class="wl-dd-btn w-full rounded-xl px-3.5 py-2.5 text-sm bg-surface border border-line flex items-center justify-between gap-2 hover:border-white/30 transition" data-dd="wlType" aria-haspopup="listbox" aria-expanded="false"
+                class="w-full rounded-xl px-3.5 py-2.5 text-sm bg-surface border border-line flex items-center justify-between gap-2 hover:border-white/30 transition">
+                <span id="wlTypeLabel" class="text-muted">-</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="shrink-0 text-muted"><path d="M6 9l6 6 6-6"/></svg>
+              </button>
+              <div id="wlTypeMenu" class="wl-dd-menu hidden absolute z-20 mt-1 w-full rounded-xl border border-line bg-surface2 shadow-lg overflow-hidden max-h-56 overflow-y-auto"></div>
+            </div>
           </div>
           <div>
             <label id="lblCategory" class="text-xs font-semibold text-muted"></label>
-            <select required id="wlCategory" class="w-full mt-1 rounded-xl px-3.5 py-2.5 text-sm"></select>
+            <div class="relative mt-1 wl-dd" id="wlCategoryDropdown">
+              <input type="hidden" id="wlCategoryInput">
+              <button type="button" id="wlCategoryBtn" class="wl-dd-btn w-full rounded-xl px-3.5 py-2.5 text-sm bg-surface border border-line flex items-center justify-between gap-2 hover:border-white/30 transition" data-dd="wlCategory" aria-haspopup="listbox" aria-expanded="false">
+                <span id="wlCategoryLabel" class="text-muted">-</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="shrink-0 text-muted"><path d="M6 9l6 6 6-6"/></svg>
+              </button>
+              <div id="wlCategoryMenu" class="wl-dd-menu hidden absolute z-20 mt-1 w-full rounded-xl border border-line bg-surface2 shadow-lg overflow-hidden max-h-56 overflow-y-auto"></div>
+            </div>
           </div>
         </div>
         <button id="wlSubmitBtn" type="submit" class="w-full mt-7 py-3 rounded-full bg-hype hover:bg-hypedark font-bold text-sm transition"></button>
@@ -98,10 +88,9 @@
 </main>
 
 
-<footer class="border-t border-line mt-10 py-8 px-5 text-center text-xs text-muted">
-  <span data-i18n="common.footer">Sneplus Live - live commerce platform. Auctions and Buy-Now drops, server-verified in real time.</span>
-</footer>
+<div data-component="footer"></div>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="/js/components.js"></script>
 <script src="/js/utils/toast.js"></script>
 <script src="/js/api/api.js"></script>
 <script src="/js/api/auth.api.js"></script>

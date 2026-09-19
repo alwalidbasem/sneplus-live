@@ -17,8 +17,10 @@ window.tailwind.config = {
         muted:    '#9A98A2',
       },
       fontFamily: {
-        display: ['"Archivo Black"', 'sans-serif'],
+        display: ['Switzer', 'Satoshi', 'Montserrat', 'Inter', 'sans-serif'],
         sans: ['Inter', 'sans-serif'],
+        mono: ['"IBM Plex Mono"', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
+        numeric: ['Inter', 'sans-serif'],
         ar: ['Tajawal', 'sans-serif'],
       },
       boxShadow: {

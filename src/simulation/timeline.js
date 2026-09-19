@@ -84,6 +84,15 @@
             .sort((a, b) => a.after - b.after);
     }
 
+    function repairBidSequence(bids = [], start = 0) {
+        let previous = Math.max(0, num(start, 0));
+        return normalizeBids(bids).map((bid) => {
+            const amount = bid.bid_amount > previous ? bid.bid_amount : previous + 1;
+            previous = amount;
+            return { ...bid, bid_amount: amount };
+        });
+    }
+
     function sortEvents(events) {
         return events
             .map((event, index) => ({ ...event, _order: index }))
@@ -191,8 +200,8 @@
     function normalizeScenario(product = {}) {
         product = product && typeof product === 'object' ? product : {};
         const type = product.type === 'buynow' ? 'buynow' : 'auction';
-        const bids = normalizeBids(product.bids);
         const start = Math.max(1, num(product.start, 1));
+        const bids = repairBidSequence(product.bids, start);
         const startAfter = Math.max(0, num(product.startAfter, 0));
         const auctionStartAfter = Math.max(0, num(product.auctionStartAfter, 0));
         const bidDuration = Math.max(5, num(product.bidDuration, 30), ...bids.map((bid) => bid.after - (startAfter + auctionStartAfter) + 3));
@@ -258,6 +267,7 @@
         EVENT_PRIORITY,
         buildEvents,
         normalizeBids,
+        repairBidSequence,
         normalizeJoins,
         normalizeViewerUpdates,
         normalizeComments,
@@ -267,4 +277,3 @@
         TimelineRunner
     };
 });
-

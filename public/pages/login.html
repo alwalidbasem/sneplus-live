@@ -4,20 +4,20 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Log in - Sneplus Live</title>
+  <script src="/js/lang-boot.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link href="https://api.fontshare.com/v2/css?f[]=switzer@500,600,700&f[]=satoshi@500,600,700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600;700&family=Montserrat:wght@500;600;700&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
   <script src="/js/tailwind-config.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="/css/main.css">
 </head>
 <body class="bg-ink text-text font-sans antialiased">
 
-<main class="max-w-lg mx-auto px-5 py-10 sm:py-16">
-  <div class="flex justify-end mb-6">
-    <button id="navLangBtn" class="text-xs font-semibold px-3 py-1.5 rounded-full border border-line hover:border-white/30 transition">EN / عربي</button>
-  </div>
+<div data-component="navbar"></div>
 
+<main class="max-w-lg mx-auto px-5 py-10 sm:py-16">
   <a href="/" class="flex items-center justify-center gap-2 mb-10">
     <svg width="34" height="34" viewBox="0 0 30 30" fill="none">
       <circle cx="15" cy="15" r="15" fill="#FF2D6B"/>
@@ -75,7 +75,10 @@ Buyer: ali@ex.com / Buyer123!</p>
   </div>
 </main>
 
+<div data-component="footer"></div>
+
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="/js/components.js"></script>
 <script src="/js/utils/toast.js"></script>
 <script src="/js/api/api.js"></script>
 <script src="/js/api/auth.api.js"></script>
@@ -99,6 +102,15 @@ Buyer: ali@ex.com / Buyer123!</p>
     $('#tabRegister').on('click', () => setTab('register'));
 
     const showErr = (sel, msg) => { $(sel).text(msg).removeClass('hidden'); };
+    const localizedError = (xhr) => {
+      const code = API.errorCode(xhr);
+      const map = {
+        INVALID_CREDENTIALS: 'login.errors.invalidCredentials',
+        VALIDATION_ERROR: 'login.errors.validation',
+        EMAIL_EXISTS: 'login.errors.emailExists'
+      };
+      return App.t(map[code] || '', API.errorText(xhr));
+    };
 
     $('#loginForm').on('submit', async (e) => {
       e.preventDefault();
@@ -108,7 +120,7 @@ Buyer: ali@ex.com / Buyer123!</p>
         await AuthAPI.login($('#loginEmail').val().trim(), $('#loginPassword').val());
         location.href = safeNext;
       } catch (xhr) {
-        showErr('#authError', API.errorText(xhr));
+        showErr('#authError', localizedError(xhr));
         $('#loginSubmitBtn').prop('disabled', false).text(App.t('login.buttons.login'));
       }
     });
@@ -121,7 +133,7 @@ Buyer: ali@ex.com / Buyer123!</p>
         await AuthAPI.register($('#regName').val().trim(), $('#regEmail').val().trim(), $('#regPassword').val());
         location.href = safeNext;
       } catch (xhr) {
-        showErr('#regError', API.errorText(xhr));
+        showErr('#regError', localizedError(xhr));
         $('#registerSubmitBtn').prop('disabled', false).text(App.t('login.buttons.register'));
       }
     });

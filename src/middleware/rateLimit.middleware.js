@@ -1,4 +1,5 @@
 const rateLimit = require('express-rate-limit');
+const env = require('../config/env');
 
 const apiLimiter = rateLimit({
     windowMs: 60 * 1000,
@@ -10,7 +11,7 @@ const apiLimiter = rateLimit({
 
 const loginLimiter = rateLimit({
     windowMs: 15 * 60 * 1000,
-    limit: 10,
+    limit: env.isDev ? 100 : 10,
     standardHeaders: 'draft-7',
     legacyHeaders: false,
     message: { success: false, error: { code: 'RATE_LIMITED', message: 'Too many login attempts. Try again later.' } }

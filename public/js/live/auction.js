@@ -81,7 +81,7 @@ const AuctionUI = {
                 <p class="font-display text-2xl mb-1">Sold!</p>
                 <p class="text-sm text-muted mb-1">Winner</p>
                 <p class="font-bold text-lg text-gold">${Helpers.escapeHtml(payload.winnerName)}</p>
-                <p class="font-display text-3xl mt-2">$${payload.finalPrice}</p>
+                <p class="font-numeric text-3xl font-bold mt-2">$${payload.finalPrice}</p>
             </div>`);
         setTimeout(() => $ov.addClass('hidden').removeClass('flex'), 4000);
     },

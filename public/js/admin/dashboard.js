@@ -26,7 +26,7 @@ const AdminDashboard = {
             <div>
                 <div class="flex justify-between text-xs mb-1">
                     <span>${Helpers.escapeHtml(r.label)}</span>
-                    <span class="text-muted">${r.count}</span>
+                    <span class="font-numeric text-muted">${r.count}</span>
                 </div>
                 <div class="h-2 bg-ink2 rounded-full overflow-hidden">
                     <div class="h-full bg-hype bar-fill" style="width:${Math.round((Number(r.count) / max) * 100)}%"></div>
@@ -48,8 +48,8 @@ const AdminDashboard = {
         $('#dayChart').html(days.map((d) => `
             <div class="flex-1 h-full flex flex-col justify-end gap-2 min-w-0">
                 <div class="bg-gold rounded-t-md min-h-[4px]" style="height:${Math.max(4, Math.round((d.count / max) * 100))}%"></div>
-                <div class="text-[10px] text-muted text-center truncate">${d.day.slice(5)}</div>
-                <div class="text-[10px] text-center font-semibold">${d.count}</div>
+                <div class="font-numeric text-[10px] text-muted text-center truncate">${d.day.slice(5)}</div>
+                <div class="font-numeric text-[10px] text-center font-semibold">${d.count}</div>
             </div>`).join(''));
     },
 
@@ -62,7 +62,7 @@ const AdminDashboard = {
                 <td class="py-2 pr-2 capitalize">${Helpers.escapeHtml(e.user_type)}</td>
                 <td class="py-2 pr-2 text-muted">${Helpers.escapeHtml(e.category)}</td>
                 <td class="py-2 pr-2 text-muted uppercase">${Helpers.escapeHtml(e.language)}</td>
-                <td class="py-2 pr-2 text-muted">${new Date(e.created_at).toLocaleDateString()}</td>
+                <td class="font-numeric py-2 pr-2 text-muted">${new Date(e.created_at).toLocaleDateString()}</td>
             </tr>`);
         });
         if (!rows.length) {

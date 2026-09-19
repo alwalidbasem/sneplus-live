@@ -213,7 +213,7 @@ const LiveSim = {
                 joins: LiveSim.normalizeJoins(item.joins),
                 viewerUpdates: LiveSim.normalizeViewerUpdates(item.viewerUpdates),
                 comments: LiveSim.normalizeComments(item.comments),
-                bids: LiveSim.normalizeBids(item.bids).map((bid) => ({
+                bids: LiveSim.repairBidSequence(item.bids, item.start).map((bid) => ({
                     name: bid.name || bid.bidder_username,
                     bid_amount: bid.bid_amount,
                     after: bid.after
@@ -457,6 +457,15 @@ const LiveSim = {
             })
             .filter((bid) => bid.bid_amount > 0)
             .sort((a, b) => a.after - b.after);
+    },
+
+    repairBidSequence(bids, start = 0) {
+        let previous = Math.max(0, Number(start) || 0);
+        return LiveSim.normalizeBids(bids).map((bid) => {
+            const amount = bid.bid_amount > previous ? bid.bid_amount : previous + 1;
+            previous = amount;
+            return { ...bid, bid_amount: amount };
+        });
     },
 
     normalizeJoins(joins) {
@@ -854,7 +863,7 @@ const LiveSim = {
                 <div class="rounded-2xl bg-surface2 border border-gold/40 px-5 py-4 mb-5">
                     <p class="text-[11px] font-semibold text-gold uppercase tracking-wider mb-1">Winner</p>
                     <p class="font-display text-xl mb-2">${Helpers.escapeHtml(winner.user === 'you' ? 'You!' : winner.user)}</p>
-                    <p class="font-display text-3xl text-gold">$${winner.amount}</p>
+                    <p class="font-numeric text-3xl font-bold text-gold">$${winner.amount}</p>
                 </div>
                 ${actions}
             </div>`).removeClass('hidden').addClass('flex');
@@ -864,7 +873,7 @@ const LiveSim = {
         const showNumber = (value) => {
             $('#endOverlay').html(`
                 <div class="fade-up flex flex-col items-center justify-center">
-                    <span class="count-pulse font-display text-gold text-8xl" style="text-shadow:0 8px 35px rgba(0,0,0,.65)">${value}</span>
+                    <span class="count-pulse font-numeric text-gold text-8xl font-bold" style="text-shadow:0 8px 35px rgba(0,0,0,.65)">${value}</span>
                 </div>`).removeClass('hidden').addClass('flex');
         };
         const showPrize = () => {
@@ -875,7 +884,7 @@ const LiveSim = {
                 <div class="fade-up max-w-xs w-full">
                     <div class="mx-auto mb-4 w-24 h-24 rounded-full bg-gold text-ink flex items-center justify-center shadow-[0_0_55px_rgba(255,197,61,0.5)] border-4 border-white/25">
                         <div class="text-center">
-                            <p class="font-display text-4xl leading-none">1</p>
+                            <p class="font-numeric text-4xl leading-none font-bold">1</p>
                             <p class="text-[10px] font-black uppercase leading-none">Prize</p>
                         </div>
                     </div>
@@ -884,7 +893,7 @@ const LiveSim = {
                     <div class="rounded-2xl bg-gold/15 border border-gold/50 px-5 py-4 mb-4">
                         <p class="text-[11px] font-semibold text-gold uppercase tracking-wider mb-1">${resultLabel}</p>
                         <p class="font-display text-2xl mb-2">${winnerName} Wins!</p>
-                        <p class="font-display text-3xl text-gold">$${winner.amount}</p>
+                        <p class="font-numeric text-3xl font-bold text-gold">$${winner.amount}</p>
                     </div>
                     <p class="text-xs text-muted">Next product starts automatically.</p>
                 </div>`).removeClass('hidden').addClass('flex');
@@ -1119,7 +1128,7 @@ const LiveSim = {
             } catch (e) {
                 return fail('Bid sequence must be valid JSON.');
             }
-            item.bids = LiveSim.normalizeBids(parsedBids);
+            item.bids = LiveSim.repairBidSequence(parsedBids, start);
             item.bidDuration = Math.max(5, Number($('#itemBidDuration').val()) || 30, ...item.bids.map((bid) => bid.after + 4));
             if (!item.bids.length) return fail('Enter at least one bid.');
         }
@@ -1183,18 +1192,12 @@ const LiveSim = {
     },
 
     countdown(value) {
-        $('#countdownOverlay').html(`<span class="count-pulse font-display text-white text-8xl" style="text-shadow:0 8px 30px rgba(0,0,0,.6)">${value}</span>`);
+        $('#countdownOverlay').html(`<span class="count-pulse font-numeric text-white text-8xl font-bold" style="text-shadow:0 8px 30px rgba(0,0,0,.6)">${value}</span>`);
         setTimeout(() => $('#countdownOverlay').empty(), 950);
     },
 
     heart() {
-        const $heart = $('<div>').text('<3').css({
-            position: 'absolute', right: '24px', bottom: '170px',
-            fontSize: '20px', zIndex: 25, transition: 'all 1.2s ease'
-        });
-        $('#phoneScreen').append($heart);
-        requestAnimationFrame(() => $heart.css({ transform: 'translateY(-220px) translateX(-10px)', opacity: '0' }));
-        setTimeout(() => $heart.remove(), 1300);
+        Helpers.heartFloat($('<div>').text('🤍').css({ position: 'absolute', fontSize: '20px', zIndex: 25 }));
     },
 
     toggleFollow() {

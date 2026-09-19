@@ -30,7 +30,13 @@
       "watchDemo": "Watch a Live demo",
       "joinWaitlist": "Join the Waitlist"
     },
-    "tags": ["Sneakers", "Watches", "Phones", "Fashion", "Beauty"],
+    "tags": [
+      "Sneakers",
+      "Watches",
+      "Phones",
+      "Fashion",
+      "Beauty"
+    ],
     "phone": {
       "host": "sneplus_official",
       "product": "Air Icon Runner",
@@ -67,8 +73,19 @@
       "country": "Country",
       "type": "User Type",
       "category": "Preferred Category",
-      "types": ["Buyer", "Seller", "Creator / Host"],
-      "categories": ["Sneakers", "Watches", "Phones", "Fashion", "Beauty", "Other"],
+      "types": [
+        "Buyer",
+        "Seller",
+        "Creator / Host"
+      ],
+      "categories": [
+        "Sneakers",
+        "Watches",
+        "Phones",
+        "Fashion",
+        "Beauty",
+        "Other"
+      ],
       "submit": "Join the Waitlist",
       "joining": "Joining...",
       "success": "You're on the list. We'll notify you when Sneplus Live launches.",
@@ -103,7 +120,13 @@
       "register": "Create account",
       "creating": "Creating..."
     },
-    "demo": "Demo: admin@sneplus.live / Admin123!\nBuyer: ali@ex.com / Buyer123!"
+    "demo": "Demo: admin@sneplus.live / Admin123!\nBuyer: ali@ex.com / Buyer123!",
+    "errors": {
+      "invalidCredentials": "Invalid email or password.",
+      "validation": "Email and password are required.",
+      "emailExists": "An account with this email already exists.",
+      "generic": "Something went wrong. Please try again."
+    }
   },
   "live": {
     "control": {
